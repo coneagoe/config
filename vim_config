@@ -1,0 +1,406 @@
+let s:VIM_DIR = expand($HOME).'/.vim'
+let s:BUNDLE_DIR = s:VIM_DIR.'/bundle'
+
+" Vundle {
+        set nocompatible        " iMproved
+        filetype off
+
+        " runtime path
+        execute "set runtimepath+=".s:BUNDLE_DIR.'/Vundle.vim'
+
+        " plugins
+        call vundle#begin()
+
+        Plugin 'VundleVim/Vundle.vim'
+
+        " general {
+                " autocomplete {
+                        Bundle 'ervandew/supertab'
+                  Bundle 'tpope/vim-surround'
+                        Bundle 'Shougo/neocomplete.vim'
+
+                " }
+
+                " search {
+                        Bundle 'yegappan/grep'
+                        " Bundle 'BurntSushi/ripgrep'
+                        Bundle 'mileszs/ack.vim'
+                " }
+
+                " replace {
+                  Bundle 'brooth/far.vim'
+                " }
+
+                " undo {
+                        " Bundle 'sjl/gundo.vim'
+                        Bundle 'mbbill/undotree'
+                " }
+
+                " increment {
+                        Bundle 'triglav/vim-visual-increment'
+                        Bundle 'vim-scripts/VisIncr'
+                " }
+
+                " DrawIt {
+                        Bundle 'vim-scripts/DrawIt'
+                " }
+
+                " Tabular {
+                  Bundle 'godlygeek/tabular'
+                " }
+
+                " TaskList {
+                        Bundle 'vim-scripts/TaskList.vim'
+                " }
+
+                " other {
+                        Bundle 'highlight.vim'
+                        Bundle 'myusuf3/numbers.vim'
+                " }
+
+                " VCS {
+                        " hg {
+                                Bundle 'phleet/vim-mercenary'
+                                Bundle 'ludovicchabant/vim-lawrencium'
+                        " }
+
+                        " git {
+                          Bundle 'tpope/vim-fugitive'
+                        " }
+                " }
+
+                " location {
+                        " NERDTree {
+                                Bundle 'scrooloose/nerdtree'
+                        " }
+
+                        " Ctrlp {
+                                Bundle 'kien/ctrlp.vim'
+                        " }
+
+                        " vim-easymotion {
+                          Bundle 'easymotion/vim-easymotion'
+                                Bundle 'haya14busa/incsearch.vim'
+                                Bundle 'haya14busa/incsearch-easymotion.vim'
+                        " }
+
+                " }
+
+                " comments {
+                        Bundle 'scrooloose/nerdcommenter'
+                " }
+
+                " status line {
+                        Bundle 'vim-airline/vim-airline'
+                        Bundle 'vim-airline/vim-airline-themes'
+                " }
+
+                " colorscheme {
+                  Bundle 'tomasr/molokai'
+                        " Bundle 'altercation/vim-colors-solarized'
+                " }
+
+                " session {
+									Bundle 'xolox/vim-misc'
+                  Bundle 'xolox/vim-session'
+                " }
+        " }
+
+        " language {
+                " C++ {
+												Bundle "octol/vim-cpp-enhanced-highlight"
+                " }
+
+                " python {
+                        Bundle 'nanotech/jellybeans.vim'
+                " }
+
+                " awk & bash & c & git & latex & matlab & perl & vim {
+                        Bundle 'WolfgangMehner/vim-plugins'
+                " }
+
+                " Doxygen {
+                        Bundle 'mrtazz/DoxygenToolkit.vim'
+                " }
+
+                " " syntastic {
+                "       Bundle 'vim-syntastic/syntastic'
+                " " }
+
+                " tagbar {
+                  Bundle 'majutsushi/tagbar'
+                " }
+        " }
+
+        call vundle#end()
+
+        filetype plugin indent on
+" }
+
+
+" row length
+set textwidth=100
+
+" colorscheme {
+        colorscheme koehler
+        " set background=dark
+        " colorscheme solarized
+" }
+
+" set whichwrap=b,s,h,l,<,>,[,] " move freely between files
+" set wrap
+" set showmatch
+" set matchtime=2
+
+" show title in console title bar
+set title
+
+" search
+set hlsearch    " highlight searches
+set incsearch   " do inremental searching
+
+" indent
+set autoindent
+set smartindent
+set cindent " do C-style indenting
+
+" tab
+" set tabstop=4 softtabstop=4 expandtab shiftwidth=4 "smarttab
+set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
+
+" auto remove trailing whitespace
+autocmd FileType c,cpp,python,perl autocmd BufWritePre <buffer> %s/\s\+$//e
+
+" makefile
+autocmd FileType make setlocal noexpandtab
+
+" C++
+au BufNewFile,BufRead *.impl set filetype=c++
+
+" keymap
+map <F2> :bNext<CR>
+map <F3> :bnext<CR>
+
+
+" neocomplete {
+        "Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+        " Disable AutoComplPop.
+        let g:acp_enableAtStartup = 0
+        " Use neocomplete.
+        let g:neocomplete#enable_at_startup = 1
+        " Use smartcase.
+        let g:neocomplete#enable_smart_case = 1
+        " Set minimum syntax keyword length.
+        let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+        " Define dictionary.
+        let g:neocomplete#sources#dictionary#dictionaries = {
+                        \ 'default' : '',
+                        \ 'vimshell' : $HOME.'/.vimshell_hist',
+                        \ 'scheme' : $HOME.'/.gosh_completions'
+                                        \ }
+
+        " Define keyword.
+        if !exists('g:neocomplete#keyword_patterns')
+                        let g:neocomplete#keyword_patterns = {}
+        endif
+        let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+        " Plugin key-mappings.
+        inoremap <expr><C-g>     neocomplete#undo_completion()
+        inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+        " Recommended key-mappings.
+        " <CR>: close popup and save indent.
+        inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+        function! s:my_cr_function()
+                return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+                " For no inserting <CR> key.
+                "return pumvisible() ? "\<C-y>" : "\<CR>"
+        endfunction
+        " <TAB>: completion.
+        inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+        " <C-h>, <BS>: close popup and delete backword char.
+        inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+        inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+        " Close popup by <Space>.
+        "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+        " AutoComplPop like behavior.
+        "let g:neocomplete#enable_auto_select = 1
+
+        " Shell like behavior(not recommended).
+        "set completeopt+=longest
+        "let g:neocomplete#enable_auto_select = 1
+        "let g:neocomplete#disable_auto_complete = 1
+        "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+        " Enable omni completion.
+        autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+        autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+        autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+        autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+        autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+        " Enable heavy omni completion.
+        if !exists('g:neocomplete#sources#omni#input_patterns')
+                let g:neocomplete#sources#omni#input_patterns = {}
+        endif
+        "let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+        "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+        "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+        " For perlomni.vim setting.
+        " https://github.com/c9s/perlomni.vim
+        let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+" }
+
+
+" NERDTree {
+        autocmd StdinReadPre * let s:std_in=1
+        autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+        map <F12> :NERDTreeToggle<CR>
+        let g:NERDTreeDirArrowExpandable = '▸'
+        let g:NERDTreeDirArrowCollapsible = '▾'
+" }
+
+
+" Ctrlp {
+        set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+        " set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
+        let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+        let g:ctrlp_custom_ignore = {
+                \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+                \ 'file': '\v\.(exe|so|dll)$',
+                \ 'link': 'some_bad_symbolic_links',
+                \ }
+" }
+
+
+" nerdcommenter {
+        " Add spaces after comment delimiters by default
+        let g:NERDSpaceDelims = 1
+
+        " Use compact syntax for prettified multi-line comments
+        let g:NERDCompactSexyComs = 1
+
+        " Align line-wise comment delimiters flush left instead of following code indentation
+        let g:NERDDefaultAlign = 'left'
+
+        " Set a language to use its alternate delimiters by default
+        let g:NERDAltDelims_java = 1
+
+        " Add your own custom formats or override the defaults
+        let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+        " Allow commenting and inverting empty lines (useful when commenting a region)
+        let g:NERDCommentEmptyLines = 1
+
+        " Enable trimming of trailing whitespace when uncommenting
+        let g:NERDTrimTrailingWhitespace = 1
+" }
+
+
+" " syntastic {
+"       set statusline+=%#warningmsg#
+"       set statusline+=%{SyntasticStatuslineFlag()}
+"       set statusline+=%*
+"
+"       let g:syntastic_always_populate_loc_list = 0
+"       let g:syntastic_auto_loc_list = 1
+"       let g:syntastic_check_on_open = 1
+"       let g:syntastic_check_on_wq = 0
+" " }
+
+
+" airline {
+        let g:airline#extensions#tabline#enabled = 1
+
+  " if !exists('g:airline_symbols')
+  "   let g:airline_symbols = {}
+  " endif
+
+  " let g:airline_left_sep = '▶'
+  " let g:airline_right_sep = '◀'
+  let g:airline_theme='tomorrow'
+" }
+
+
+" tagbar {
+  " nmap <F8> :TagbarToggle<CR>
+        nnoremap <silent> <F8> :TagbarToggle<CR>
+" }
+
+
+" vim-easymotion {
+        let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+        " Jump to anywhere you want with minimal keystrokes, with just one key binding.
+        " `s{char}{label}`
+        nmap s <Plug>(easymotion-overwin-f)
+        " or
+        " `s{char}{char}{label}`
+        " Need one more keystroke, but on average, it may be more comfortable.
+        nmap s <Plug>(easymotion-overwin-f2)
+
+        " Turn on case insensitive feature
+        let g:EasyMotion_smartcase = 1
+
+        " JK motions: Line motions
+        map <Leader>j <Plug>(easymotion-j)
+        map <Leader>k <Plug>(easymotion-k)
+" }
+
+
+" incsearch-easymotion {
+        " incsearch.vim x fuzzy x vim-easymotion
+
+        function! s:config_easyfuzzymotion(...) abort
+                return extend(copy({
+                \   'converters': [incsearch#config#fuzzy#converter()],
+                \   'modules': [incsearch#config#easymotion#module()],
+                \   'keymap': {"\<CR>": '<Over>(easymotion)'},
+                \   'is_expr': 0,
+                \   'is_stay': 1
+                \ }), get(a:, 1, {}))
+        endfunction
+
+        noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
+
+        map z/ <Plug>(incsearch-easymotion-/)
+        map z? <Plug>(incsearch-easymotion-?)
+        map zg/ <Plug>(incsearch-easymotion-stay)
+" }
+
+
+" DoxygenToolkit {
+    " let g:DoxygenToolkit_commentType="C"
+    " let g:DoxygenToolkit_briefTag_pre="===  FUNCTION  ======================================================================\n "
+    let g:DoxygenToolkit_briefTag_funcName = "yes"
+    let g:DoxygenToolkit_paramTag_pre="@Param "
+    let g:DoxygenToolkit_returnTag="@Returns   "
+    " let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------------"
+    " let g:DoxygenToolkit_blockFooter="--------------------------------------------------------------------------"
+    let g:DoxygenToolkit_authorName="Wu Xufeng"
+" }
+
+
+" vim-plugins {
+    let s:VIM_PLUGINS_DIR = s:BUNDLE_DIR.'/vim-plugins'
+" }
+
+
+" refactor {
+"    map <Leader>rr : call RenameVariable()<ENTER>
+" }
+
+
+" hg
+function HgDiff()
+    let l:file_name = bufname("")
+    if l:file_name != ""
+        execute "!vimdiff -c 'set diffopt+=iwhite' <".l:file_name." `hg cat ".l:file_name."`"
+    endif
+endfunction
+
