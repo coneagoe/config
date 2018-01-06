@@ -1,4 +1,30 @@
+"===============================================================================
+"
+"          File:  .vimrc
+" 
+"   Description:  
+" 
+"   VIM Version:  7.0+
+"        Author:  Coneagoe (), coneagoe@gmail.com
+"  Organization:  
+"       Version:  1.0
+"       Created:  02/13/2014 14:26
+"      Revision:  ---
+"       License:  Copyright (c) 2014, Coneagoe
+"===============================================================================
+let s:os = "linux"
+if system('uname') == "CYGWIN_NT-6.1"
+  let s:os = "cygwin"
+endif
+
+let s:hostname = system('hostname')
+
 let s:VIM_DIR = expand($HOME).'/.vim'
+
+
+"-------------------------------------------------------------------------------
+" Vundle
+"-------------------------------------------------------------------------------
 let s:BUNDLE_DIR = s:VIM_DIR.'/bundle'
 
 " Vundle {
@@ -16,9 +42,8 @@ let s:BUNDLE_DIR = s:VIM_DIR.'/bundle'
         " general {
                 " autocomplete {
                         Bundle 'ervandew/supertab'
-                  Bundle 'tpope/vim-surround'
+                        Bundle 'tpope/vim-surround'
                         Bundle 'Shougo/neocomplete.vim'
-
                 " }
 
                 " search {
@@ -28,7 +53,7 @@ let s:BUNDLE_DIR = s:VIM_DIR.'/bundle'
                 " }
 
                 " replace {
-                  Bundle 'brooth/far.vim'
+                        Bundle 'brooth/far.vim'
                 " }
 
                 " undo {
@@ -96,19 +121,24 @@ let s:BUNDLE_DIR = s:VIM_DIR.'/bundle'
                 " }
 
                 " colorscheme {
-                  Bundle 'tomasr/molokai'
+                        Bundle 'tomasr/molokai'
                         " Bundle 'altercation/vim-colors-solarized'
                 " }
 
                 " session {
-									Bundle 'xolox/vim-misc'
+                  Bundle 'xolox/vim-misc'
                   Bundle 'xolox/vim-session'
+                " }
+
+        " snippets {
+            Bundle 'honza/vim-snippets'
                 " }
         " }
 
         " language {
                 " C++ {
-												Bundle "octol/vim-cpp-enhanced-highlight"
+                        Bundle "octol/vim-cpp-enhanced-highlight"
+            Bundle "vim-scripts/refactor"
                 " }
 
                 " python {
@@ -122,6 +152,10 @@ let s:BUNDLE_DIR = s:VIM_DIR.'/bundle'
                 " Doxygen {
                         Bundle 'mrtazz/DoxygenToolkit.vim'
                 " }
+
+        " Latex {
+            Bundle 'lervag/vimtex'
+        " }
 
                 " " syntastic {
                 "       Bundle 'vim-syntastic/syntastic'
@@ -143,6 +177,7 @@ set textwidth=100
 
 " colorscheme {
         colorscheme koehler
+"        colorscheme molokai
         " set background=dark
         " colorscheme solarized
 " }
@@ -165,11 +200,17 @@ set smartindent
 set cindent " do C-style indenting
 
 " tab
-" set tabstop=4 softtabstop=4 expandtab shiftwidth=4 "smarttab
-set tabstop=2 softtabstop=2 shiftwidth=2 smarttab
+if s:hostname == "CV0035334N0"
+    set tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
+else
+    set tabstop=4 softtabstop=4 expandtab shiftwidth=4 smarttab
+endif
 
 " auto remove trailing whitespace
 autocmd FileType c,cpp,python,perl autocmd BufWritePre <buffer> %s/\s\+$//e
+
+" diff
+set diffopt+=iwhite
 
 " makefile
 autocmd FileType make setlocal noexpandtab
@@ -392,15 +433,6 @@ map <F3> :bnext<CR>
 
 
 " refactor {
-"    map <Leader>rr : call RenameVariable()<ENTER>
+    map <Leader>rr : call RenameVariable()<ENTER>
 " }
-
-
-" hg
-function HgDiff()
-    let l:file_name = bufname("")
-    if l:file_name != ""
-        execute "!vimdiff -c 'set diffopt+=iwhite' <".l:file_name." `hg cat ".l:file_name."`"
-    endif
-endfunction
 
