@@ -1,3 +1,17 @@
+"===============================================================================
+"
+"          File:  .vimrc
+" 
+"   Description:  
+" 
+"   VIM Version:  7.0+
+"        Author:  Coneagoe (), coneagoe@gmail.com
+"  Organization:  
+"       Version:  1.0
+"       Created:  02/13/2014 14:26
+"      Revision:  ---
+"       License:  Copyright (c) 2014, Coneagoe
+"===============================================================================
 let s:os = "linux"
 if system('uname') == "CYGWIN_NT-6.1"
   let s:os = "cygwin"
@@ -5,8 +19,12 @@ endif
 
 let s:hostname = system('hostname')
 
-
 let s:VIM_DIR = expand($HOME).'/.vim'
+
+
+"-------------------------------------------------------------------------------
+" Vundle
+"-------------------------------------------------------------------------------
 let s:BUNDLE_DIR = s:VIM_DIR.'/bundle'
 
 " Vundle {
@@ -22,130 +40,129 @@ let s:BUNDLE_DIR = s:VIM_DIR.'/bundle'
         Plugin 'VundleVim/Vundle.vim'
 
         " general {
-                " autocomplete {
-                        Bundle 'ervandew/supertab'
-                        Bundle 'tpope/vim-surround'
-                        Bundle 'Shougo/neocomplete.vim'
+            " autocomplete {
+                Bundle 'ervandew/supertab'
+                Bundle 'tpope/vim-surround'
+                Bundle 'Shougo/neocomplete.vim'
+            " }
+
+            " search {
+                Bundle 'yegappan/grep'
+                " Bundle 'BurntSushi/ripgrep'
+                Bundle 'mileszs/ack.vim'
+            " }
+
+            " replace {
+                Bundle 'brooth/far.vim'
+            " }
+
+            " undo {
+                " Bundle 'sjl/gundo.vim'
+                Bundle 'mbbill/undotree'
+            " }
+
+            " increment {
+                Bundle 'triglav/vim-visual-increment'
+                Bundle 'vim-scripts/VisIncr'
+            " }
+
+            " DrawIt {
+                Bundle 'vim-scripts/DrawIt'
+            " }
+
+            " Tabular {
+                Bundle 'godlygeek/tabular'
+            " }
+
+            " TaskList {
+                Bundle 'vim-scripts/TaskList.vim'
+            " }
+
+            " other {
+                Bundle 'highlight.vim'
+                Bundle 'myusuf3/numbers.vim'
+            " }
+
+            " VCS {
+                " hg {
+                    Bundle 'phleet/vim-mercenary'
+                    Bundle 'ludovicchabant/vim-lawrencium'
                 " }
 
-                " search {
-                        Bundle 'yegappan/grep'
-                        " Bundle 'BurntSushi/ripgrep'
-                        Bundle 'mileszs/ack.vim'
+                " git {
+                    Bundle 'tpope/vim-fugitive'
+                " }
+            " }
+
+            " location {
+                " NERDTree {
+                    Bundle 'scrooloose/nerdtree'
                 " }
 
-                " replace {
-                        Bundle 'brooth/far.vim'
+                " Ctrlp {
+                    Bundle 'kien/ctrlp.vim'
                 " }
 
-                " undo {
-                        " Bundle 'sjl/gundo.vim'
-                        Bundle 'mbbill/undotree'
+                " vim-easymotion {
+                    Bundle 'easymotion/vim-easymotion'
+                    Bundle 'haya14busa/incsearch.vim'
+                    Bundle 'haya14busa/incsearch-easymotion.vim'
                 " }
+            " }
 
-                " increment {
-                        Bundle 'triglav/vim-visual-increment'
-                        Bundle 'vim-scripts/VisIncr'
-                " }
+            " comments {
+                Bundle 'scrooloose/nerdcommenter'
+            " }
 
-                " DrawIt {
-                        Bundle 'vim-scripts/DrawIt'
-                " }
+            " status line {
+                Bundle 'vim-airline/vim-airline'
+                Bundle 'vim-airline/vim-airline-themes'
+            " }
 
-                " Tabular {
-                  Bundle 'godlygeek/tabular'
-                " }
+            " colorscheme {
+                Bundle 'tomasr/molokai'
+                " Bundle 'altercation/vim-colors-solarized'
+            " }
 
-                " TaskList {
-                        Bundle 'vim-scripts/TaskList.vim'
-                " }
+            " session {
+                Bundle 'xolox/vim-misc'
+                Bundle 'xolox/vim-session'
+            " }
 
-                " other {
-                        Bundle 'highlight.vim'
-                        Bundle 'myusuf3/numbers.vim'
-                " }
-
-                " VCS {
-                        " hg {
-                                Bundle 'phleet/vim-mercenary'
-                                Bundle 'ludovicchabant/vim-lawrencium'
-                        " }
-
-                        " git {
-                          Bundle 'tpope/vim-fugitive'
-                        " }
-                " }
-
-                " location {
-                        " NERDTree {
-                                Bundle 'scrooloose/nerdtree'
-                        " }
-
-                        " Ctrlp {
-                                Bundle 'kien/ctrlp.vim'
-                        " }
-
-                        " vim-easymotion {
-                          Bundle 'easymotion/vim-easymotion'
-                                Bundle 'haya14busa/incsearch.vim'
-                                Bundle 'haya14busa/incsearch-easymotion.vim'
-                        " }
-
-                " }
-
-                " comments {
-                        Bundle 'scrooloose/nerdcommenter'
-                " }
-
-                " status line {
-                        Bundle 'vim-airline/vim-airline'
-                        Bundle 'vim-airline/vim-airline-themes'
-                " }
-
-                " colorscheme {
-                        Bundle 'tomasr/molokai'
-                        " Bundle 'altercation/vim-colors-solarized'
-                " }
-
-                " session {
-                  Bundle 'xolox/vim-misc'
-                  Bundle 'xolox/vim-session'
-                " }
-
-        " snippets {
-            Bundle 'honza/vim-snippets'
-                " }
+            " snippets {
+                Bundle 'honza/vim-snippets'
+            " }
         " }
 
         " language {
-                " C++ {
-                  	Bundle "octol/vim-cpp-enhanced-highlight"
-            Bundle "vim-scripts/refactor"
-                " }
+            " C++ {
+                Bundle "octol/vim-cpp-enhanced-highlight"
+                Bundle "vim-scripts/refactor"
+            " }
 
-                " python {
-                        Bundle 'nanotech/jellybeans.vim'
-                " }
+            " python {
+                Bundle 'nanotech/jellybeans.vim'
+            " }
 
-                " awk & bash & c & git & latex & matlab & perl & vim {
-                        Bundle 'WolfgangMehner/vim-plugins'
-                " }
+            " awk & bash & c & git & latex & matlab & perl & vim {
+                Bundle 'WolfgangMehner/vim-plugins'
+            " }
 
-                " Doxygen {
-                        Bundle 'mrtazz/DoxygenToolkit.vim'
-                " }
+            " Doxygen {
+                Bundle 'mrtazz/DoxygenToolkit.vim'
+            " }
 
-        " Latex {
-            Bundle 'lervag/vimtex'
-        " }
+            " Latex {
+                Bundle 'lervag/vimtex'
+            " }
 
-                " " syntastic {
-                "       Bundle 'vim-syntastic/syntastic'
-                " " }
+            " syntastic {
+                Bundle 'vim-syntastic/syntastic'
+            " }
 
-                " tagbar {
-                  Bundle 'majutsushi/tagbar'
-                " }
+            " tagbar {
+                Bundle 'majutsushi/tagbar'
+            " }
         " }
 
         call vundle#end()
