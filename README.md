@@ -1,2 +1,2 @@
-# vim_config
-private vim configure with Vundle
+# config
+private configurations
