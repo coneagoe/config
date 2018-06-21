@@ -20,7 +20,9 @@ let s:VIM_DIR = expand($HOME).'/.vim'
     " autocomplete {
         Plug 'ervandew/supertab'
         Plug 'tpope/vim-surround'
-        " Plug 'Shougo/neocomplete.vim'
+        Plug 'Shougo/deoplete.nvim'
+        Plug 'roxma/nvim-yarp'
+        Plug 'roxma/vim-hug-neovim-rpc'
     " }
 
     " search {
@@ -50,7 +52,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
     " }
 
     " other {
-        "Plug 'highlight.vim'
+        Plug 'vim-scripts/highlight.vim'
         Plug 'myusuf3/numbers.vim'
     " }
 
@@ -60,6 +62,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
     " tags {
         Plug 'ludovicchabant/vim-gutentags'
+        Plug 'majutsushi/tagbar'
     " }
 
     " align {
@@ -91,6 +94,10 @@ let s:VIM_DIR = expand($HOME).'/.vim'
         Plug 'tpope/vim-unimpaired'
 
         Plug 'Yggdroot/LeaderF'
+
+        " Ctrlp {
+            Plug 'ctrlpvim/ctrlp.vim'
+        " }
 
         Plug 'justinmk/vim-dirvish'
 
@@ -128,7 +135,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
         Plug 'kana/vim-textobj-function', { 'for':['c', 'cpp', 'vim'] }
         Plug 'sgur/vim-textobj-parameter'
 
-        Plug 'Valloric/YouCompleteMe', { 'for':['c', 'cpp'] }
+        " Plug 'Valloric/YouCompleteMe', { 'for':['c', 'cpp'] }
 
         Plug 'Shougo/echodoc.vim' 
 
@@ -165,8 +172,13 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
 set textwidth=100
 
-"colorscheme koehler
-colorscheme molokai
+
+if s:hostname == "CV0035334N0"
+    colorscheme molokai
+else
+    colorscheme koehler
+endif
+
 
 " show title in console title bar
 set title
@@ -336,43 +348,40 @@ let g:Lf_NormalMap = {
 
 
 " vim-easymotion {
-        let g:EasyMotion_do_mapping = 0 " Disable default mappings
+    " <Leader>f{char} to move to {char}
+    map  <Leader>f <Plug>(easymotion-bd-f)
+    nmap <Leader>f <Plug>(easymotion-overwin-f)
 
-        " Jump to anywhere you want with minimal keystrokes, with just one key binding.
-        " `s{char}{label}`
-        nmap s <Plug>(easymotion-overwin-f)
-        " or
-        " `s{char}{char}{label}`
-        " Need one more keystroke, but on average, it may be more comfortable.
-        nmap s <Plug>(easymotion-overwin-f2)
+    " s{char}{char} to move to {char}{char}
+    nmap s <Plug>(easymotion-overwin-f2)
 
-        " Turn on case insensitive feature
-        let g:EasyMotion_smartcase = 1
+    " Move to line
+    map <Leader>L <Plug>(easymotion-bd-jk)
+    nmap <Leader>L <Plug>(easymotion-overwin-line)
 
-        " JK motions: Line motions
-        map <Leader>j <Plug>(easymotion-j)
-        map <Leader>k <Plug>(easymotion-k)
+    " Move to word
+    map  <Leader>w <Plug>(easymotion-bd-w)
+    nmap <Leader>w <Plug>(easymotion-overwin-w)
 " }
 
 
 " incsearch-easymotion {
-        " incsearch.vim x fuzzy x vim-easymotion
+    " You can use other keymappings like <C-l> instead of <CR> if you want to
+    " use these mappings as default search and somtimes want to move cursor with
+    " EasyMotion.
+    function! s:incsearch_config(...) abort
+        return incsearch#util#deepextend(deepcopy({
+                    \   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
+                    \   'keymap': {
+                    \     "\<CR>": '<Over>(easymotion)'
+                    \   },
+                    \   'is_expr': 0
+                    \ }), get(a:, 1, {}))
+    endfunction
 
-        function! s:config_easyfuzzymotion(...) abort
-                return extend(copy({
-                \   'converters': [incsearch#config#fuzzy#converter()],
-                \   'modules': [incsearch#config#easymotion#module()],
-                \   'keymap': {"\<CR>": '<Over>(easymotion)'},
-                \   'is_expr': 0,
-                \   'is_stay': 1
-                \ }), get(a:, 1, {}))
-        endfunction
-
-        noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
-
-        map z/ <Plug>(incsearch-easymotion-/)
-        map z? <Plug>(incsearch-easymotion-?)
-        map zg/ <Plug>(incsearch-easymotion-stay)
+    noremap <silent><expr> /  incsearch#go(<SID>incsearch_config())
+    noremap <silent><expr> ?  incsearch#go(<SID>incsearch_config({'command': '?'}))
+    noremap <silent><expr> g/ incsearch#go(<SID>incsearch_config({'is_stay': 1}))
 " }
 
 
@@ -393,3 +402,26 @@ let g:Lf_NormalMap = {
 " }
 
 
+" Ctrlp {
+    set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+    " set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
+    let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+    let g:ctrlp_custom_ignore = {
+            \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+            \ 'file': '\v\.(exe|so|dll)$',
+            \ 'link': 'some_bad_symbolic_links',
+            \ }
+
+    if executable('ag')
+        " Use Ag over Grep
+        set grepprg=ag\ --nogroup\ --nocolor
+
+        " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+        let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    else
+        let g:ctrlp_user_command = 'find %s -type f'
+    endif
+
+    " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+" }

@@ -100,7 +100,7 @@ let s:BUNDLE_DIR = s:VIM_DIR.'/bundle'
                 " }
 
                 " Ctrlp {
-                    Bundle 'kien/ctrlp.vim'
+                Bundle 'ctrlpvim/ctrlp.vim'
                 " }
 
                 " vim-easymotion {
@@ -156,12 +156,13 @@ let s:BUNDLE_DIR = s:VIM_DIR.'/bundle'
                 Bundle 'lervag/vimtex'
             " }
 
-            " syntastic {
+            " lint {
                 Bundle 'vim-syntastic/syntastic'
             " }
 
-            " tagbar {
+            " tag {
                 Bundle 'majutsushi/tagbar'
+                Bundle 'vim-scripts/gtags.vim'
             " }
         " }
 
@@ -177,8 +178,8 @@ set textwidth=100
 " colorscheme {
         colorscheme koehler
 "        colorscheme molokai
-        " set background=dark
-        " colorscheme solarized
+" set background=dark
+" colorscheme solarized
 " }
 
 " set whichwrap=b,s,h,l,<,>,[,] " move freely between files
@@ -315,6 +316,18 @@ map <F3> :bnext<CR>
                 \ 'file': '\v\.(exe|so|dll)$',
                 \ 'link': 'some_bad_symbolic_links',
                 \ }
+
+        if executable('ag')
+            " Use Ag over Grep
+            set grepprg=ag\ --nogroup\ --nocolor
+
+            " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+            let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+        else
+            let g:ctrlp_user_command = 'find %s -type f'
+        endif
+
+        " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
 " }
 
 
@@ -356,6 +369,8 @@ map <F3> :bnext<CR>
 
 " airline {
         let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#tabline#show_buffers = 1
+  let g:airline#extensions#bufferline#enabled = 1
 
   " if !exists('g:airline_symbols')
   "   let g:airline_symbols = {}
@@ -367,7 +382,7 @@ map <F3> :bnext<CR>
 " }
 
 
-" tagbar {
+" tag {
   " nmap <F8> :TagbarToggle<CR>
         nnoremap <silent> <F8> :TagbarToggle<CR>
 " }
