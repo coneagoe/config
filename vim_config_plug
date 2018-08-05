@@ -1,3 +1,4 @@
+" environment specific {{{
 let s:os = "linux"
 if system('uname') == "CYGWIN_NT-6.1"
   let s:os = "cygwin"
@@ -5,11 +6,11 @@ endif
 
 let s:hostname = system('hostname')
 
-
 let s:VIM_DIR = expand($HOME).'/.vim'
+" }}}
 
 
-" vim-plug {
+" vim-plug {{{
     " Specify a directory for plugins
     " - For Neovim: ~/.local/share/nvim/plugged
     " - Avoid using standard Vim directory names like 'plugin'
@@ -17,87 +18,85 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
     " Make sure you use single quotes
 
-    " autocomplete {
+    " autocomplete {{{
         Plug 'ervandew/supertab'
         Plug 'tpope/vim-surround'
         Plug 'Shougo/deoplete.nvim'
         Plug 'roxma/nvim-yarp'
         Plug 'roxma/vim-hug-neovim-rpc'
-    " }
+    " }}}
 
-    " search {
+    " search {{{
         Plug 'yegappan/grep'
         Plug 'mileszs/ack.vim'
-    " }
+    " }}}
 
-    " replace {
+    " replace {{{
         Plug 'brooth/far.vim'
-    " }
+    " }}}
 
-    " undo {
+    " undo {{{
         Plug 'mbbill/undotree'
-    " }
+    " }}}
 
-    " increment {
+    " increment {{{
         Plug 'triglav/vim-visual-increment'
         Plug 'vim-scripts/VisIncr'
-    " }
+    " }}}
 
-    " DrawIt {
+    " DrawIt {{{
         Plug 'vim-scripts/DrawIt'
-    " }
+    " }}}
 
-    " TaskList {
+    " TaskList {{{
         Plug 'vim-scripts/TaskList.vim'
-    " }
+    " }}}
 
-    " other {
+    " other {{{
         Plug 'vim-scripts/highlight.vim'
         Plug 'myusuf3/numbers.vim'
-    " }
+    " }}}
 
-    " customized menu {
+    " customized menu {{{
         Plug 'skywind3000/quickmenu.vim'
-    " }
+    " }}}
 
-    " tags {
+    " tags {{{
         Plug 'ludovicchabant/vim-gutentags'
         Plug 'majutsushi/tagbar'
-    " }
+    " }}}
 
-    " align {
+    " align {{{
         Plug 'junegunn/vim-easy-align'
-    " }
+    " }}}
 
-    " async {
+    " async {{{
         Plug 'skywind3000/asyncrun.vim'
-    " }
+    " }}}
 
-    " make {
+    " make {{{
         Plug 'mh21/errormarker.vim'
-    " }
+    " }}}
 
-    " VCS {
+    " VCS {{{
         Plug 'mhinz/vim-signify'
 
-        " hg {
+        " hg {{{
             Plug 'phleet/vim-mercenary'
             Plug 'ludovicchabant/vim-lawrencium'
-        " }
+        " }}}
 
-        " git {
+        " git {{{
             Plug 'tpope/vim-fugitive'
-        " }
-    " }
+        " }}}
+    " }}}
 
-    " location {
+    " location {{{
         Plug 'tpope/vim-unimpaired'
 
         Plug 'Yggdroot/LeaderF'
 
-        " Ctrlp {
             Plug 'ctrlpvim/ctrlp.vim'
-        " }
 
         Plug 'justinmk/vim-dirvish'
 
@@ -106,29 +105,29 @@ let s:VIM_DIR = expand($HOME).'/.vim'
             Plug 'haya14busa/incsearch.vim'
             Plug 'haya14busa/incsearch-easymotion.vim'
         " }
-    " }
+    " }}}
 
-    " comments {
+    " comments {{{
         Plug 'scrooloose/nerdcommenter'
-    " }
+    " }}}
 
-    " status line {
+    " status line {{{
         Plug 'vim-airline/vim-airline'
         Plug 'vim-airline/vim-airline-themes'
         Plug 'bling/vim-bufferline'
-    " }
+    " }}}
 
-    " colorscheme {
+    " colorscheme {{{
         Plug 'tomasr/molokai'
         " Plug 'altercation/vim-colors-solarized'
-    " }
+    " }}}
 
-    " session {
+    " session {{{
         Plug 'xolox/vim-misc'
         Plug 'xolox/vim-session'
-    " }
+    " }}}
 
-    " language {
+    " language {{{
         Plug 'kana/vim-textobj-user'
         Plug 'kana/vim-textobj-indent'
         Plug 'kana/vim-textobj-syntax'
@@ -144,7 +143,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
         " }
 
         " python {
-            Plug 'davidhalter/jedi-vim', { 'for':['python'] }
+            Plug 'python-mode/python-mode', { 'branch': 'develop', 'for': 'python' }
         " }
 
         " awk & bash & c & git & latex & matlab & perl & vim {
@@ -163,46 +162,82 @@ let s:VIM_DIR = expand($HOME).'/.vim'
         " lint {
             Plug 'w0rp/ale', { 'for':['bash', 'c', 'cpp', 'perl', 'vim', 'latex', 'matlab'] }
         " }
+
+        " HTML & CSS {
+            Plug 'mattn/emmet-vim', { 'for':['html', 'css'] }
     " }
+    " }}}
 
     " Initialize plugin system
     call plug#end()
-" }
+" }}}
 
 
-set textwidth=100
+" Folder text {{{
+    augroup ft_vim
+        au!
+        au FileType vim setlocal foldmethod=marker
+    augroup END
+" }}}
 
 
-if s:hostname == "CV0035334N0"
+" General {{{
+    set nocompatible
+    set autochdir
+    " share clipboard between vim and system
+    set clipboard+=unnamed
+    " don't map key alt to menu
+    set winaltkeys=no
+    " show title in console title bar
+    set title
+" }}}
+
+
+" GUI {{{
+    " don't show tools bar
+    set guioptions-=T
+" }}}
+
+
+" Editor {{{
+    if filereadable("home")
     colorscheme molokai
-else
+    else
     colorscheme koehler
-endif
+    endif
 
+    set cursorline
+    set textwidth=100
 
-" show title in console title bar
-set title
+    " search {{{
+        set hlsearch    " highlight searches
+        set incsearch   " do inremental searching
+    " }}}
 
-" search
-set hlsearch    " highlight searches
-set incsearch   " do inremental searching
+    " Language & Encoding {{{
+        set fileencodings=utf-8,gbk2312,gbk,gb18030,cp936
+        set encoding=utf-8
+        let $LANG = 'en_US.UTF-8'
+    " }}}
 
-" indent {
-set autoindent
-set smartindent
-set cindent " do C-style indenting
-" }
+    " indent {{{
+        set autoindent
+        set smartindent
+        set cindent " do C-style indenting
+    " }}}
 
-" tab {
-if s:hostname == "CV0035334N0"
-    set tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
-else
-    set tabstop=4 softtabstop=4 expandtab shiftwidth=4 smarttab
-endif
-" }
+    " tab {{{
+        if filereadable("home")
+            set tabstop=4 softtabstop=4 expandtab shiftwidth=4 smarttab
+        else
+            set tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
+        endif
+    " }}}
 
-" auto remove trailing whitespace
-autocmd FileType c,cpp,python,perl autocmd BufWritePre <buffer> %s/\s\+$//e
+    " auto remove trailing whitespace
+    autocmd FileType c,cpp,python,perl autocmd BufWritePre <buffer> %s/\s\+$//e
+" }}}
+
 
 " diff
 set diffopt+=iwhite
@@ -213,7 +248,7 @@ autocmd FileType make setlocal noexpandtab
 " C++
 au BufNewFile,BufRead *.impl set filetype=c++
 
-" tags {
+" tags {{{
 set tags=./.tags;,.tags
 
 " set project identification file for gutentags
@@ -233,10 +268,10 @@ let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 if !isdirectory(s:vim_tags)
    silent! call mkdir(s:vim_tags, 'p')
 endif
-" }
+" }}}
 
 
-" asyncrun {
+" asyncrun {{{
 " automatically open quickfix window when AsyncRun command is executed
 " set the quickfix window 6 lines height.
 let g:asyncrun_open = 6
@@ -246,82 +281,82 @@ let g:asyncrun_bell = 1
 
 " F10 to toggle quickfix window
 nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
-" }
+" }}}
 
 
-" make {
-let g:asyncrun_auto = "make"
-" }
+" make {{{
+    let g:asyncrun_auto = "make"
+" }}}
 
 
-" lint {
-let g:ale_linters_explicit = 1
-let g:ale_completion_delay = 500
-let g:ale_echo_delay = 20
-let g:ale_lint_delay = 500
-let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
-let g:airline#extensions#ale#enabled = 1
+" lint {{{
+    let g:ale_linters_explicit = 1
+    let g:ale_completion_delay = 500
+    let g:ale_echo_delay = 20
+    let g:ale_lint_delay = 500
+    let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+    let g:ale_lint_on_text_changed = 'normal'
+    let g:ale_lint_on_insert_leave = 1
+    let g:airline#extensions#ale#enabled = 1
 
-let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
-let g:ale_c_cppcheck_options = ''
-let g:ale_cpp_cppcheck_options = ''
+    let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+    let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+    let g:ale_c_cppcheck_options = ''
+    let g:ale_cpp_cppcheck_options = ''
 
-let g:ale_sign_error = "\ue009\ue009"
-hi! clear SpellBad
-hi! clear SpellCap
-hi! clear SpellRare
-hi! SpellBad gui=undercurl guisp=red
-hi! SpellCap gui=undercurl guisp=blue
-hi! SpellRare gui=undercurl guisp=magenta
-" }
+    let g:ale_sign_error = "\ue009\ue009"
+    hi! clear SpellBad
+    hi! clear SpellCap
+    hi! clear SpellRare
+    hi! SpellBad gui=undercurl guisp=red
+    hi! SpellCap gui=undercurl guisp=blue
+    hi! SpellRare gui=undercurl guisp=magenta
+" }}}
 
 
-" YCM {
-let g:ycm_add_preview_to_completeopt = 0
-let g:ycm_show_diagnostics_ui = 0
-let g:ycm_server_log_level = 'info'
-let g:ycm_min_num_identifier_candidate_chars = 2
-let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g:ycm_complete_in_strings=1
-let g:ycm_key_invoke_completion = '<c-z>'
-set completeopt=menu,menuone
+" YCM {{{
+    let g:ycm_add_preview_to_completeopt = 0
+    let g:ycm_show_diagnostics_ui = 0
+    let g:ycm_server_log_level = 'info'
+    let g:ycm_min_num_identifier_candidate_chars = 2
+    let g:ycm_collect_identifiers_from_comments_and_strings = 1
+    let g:ycm_complete_in_strings=1
+    let g:ycm_key_invoke_completion = '<c-z>'
+    set completeopt=menu,menuone
 
-noremap <c-z> <NOP>
+    noremap <c-z> <NOP>
 
-let g:ycm_semantic_triggers =  {
+    let g:ycm_semantic_triggers =  {
            \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
            \ 'cs,lua,javascript': ['re!\w{2}'],
            \ }
-" }
+" }}}
 
 
-" echodoc {
-set noshowmode
-" }
+" echodoc {{{
+    set noshowmode
+" }}}
 
 
-" LeaderF {
-let g:Lf_ShortcutF = '<c-p>'
-let g:Lf_ShortcutB = '<m-n>'
-noremap <c-n> :LeaderfMru<cr>
-noremap <m-p> :LeaderfFunction!<cr>
-noremap <m-n> :LeaderfBuffer<cr>
-noremap <m-m> :LeaderfTag<cr>
-let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
+" LeaderF {{{
+    let g:Lf_ShortcutF = '<c-p>'
+    let g:Lf_ShortcutB = '<m-n>'
+    noremap <c-n> :LeaderfMru<cr>
+    noremap <m-p> :LeaderfFunction!<cr>
+    noremap <m-n> :LeaderfBuffer<cr>
+    noremap <m-m> :LeaderfTag<cr>
+    let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
 
-let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
-let g:Lf_WorkingDirectoryMode = 'Ac'
-let g:Lf_WindowHeight = 0.30
-let g:Lf_CacheDirectory = expand('~/.vim/cache')
-let g:Lf_ShowRelativePath = 0
-let g:Lf_HideHelp = 1
-let g:Lf_StlColorscheme = 'powerline'
-let g:Lf_PreviewResult = {'Function':0}
+    let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
+    let g:Lf_WorkingDirectoryMode = 'Ac'
+    let g:Lf_WindowHeight = 0.30
+    let g:Lf_CacheDirectory = expand('~/.vim/cache')
+    let g:Lf_ShowRelativePath = 0
+    let g:Lf_HideHelp = 1
+    let g:Lf_StlColorscheme = 'powerline'
+    let g:Lf_PreviewResult = {'Function':0}
 
-let g:Lf_NormalMap = {
+    let g:Lf_NormalMap = {
 	\ "File":   [["<ESC>", ':exec g:Lf_py "fileExplManager.quit()"<CR>']],
 	\ "Buffer": [["<ESC>", ':exec g:Lf_py "bufExplManager.quit()"<CR>']],
 	\ "Mru":    [["<ESC>", ':exec g:Lf_py "mruExplManager.quit()"<CR>']],
@@ -329,10 +364,10 @@ let g:Lf_NormalMap = {
 	\ "Function":    [["<ESC>", ':exec g:Lf_py "functionExplManager.quit()"<CR>']],
 	\ "Colorscheme":    [["<ESC>", ':exec g:Lf_py "colorschemeExplManager.quit()"<CR>']],
 	\ }
-" }
+" }}}
 
 
-" " airline {
+" airline {{{
 "  let g:airline#extensions#tabline#enabled = 1
   "let g:airline#extensions#tabline#show_buffers = 1
   "let g:airline#extensions#bufferline#enabled = 1
@@ -344,10 +379,10 @@ let g:Lf_NormalMap = {
   "" let g:airline_left_sep = '▶'
   "" let g:airline_right_sep = '◀'
 "  let g:airline_theme='tomorrow'
-" }
+" }}}
 
 
-" vim-easymotion {
+" vim-easymotion {{{
     " <Leader>f{char} to move to {char}
     map  <Leader>f <Plug>(easymotion-bd-f)
     nmap <Leader>f <Plug>(easymotion-overwin-f)
@@ -362,10 +397,10 @@ let g:Lf_NormalMap = {
     " Move to word
     map  <Leader>w <Plug>(easymotion-bd-w)
     nmap <Leader>w <Plug>(easymotion-overwin-w)
-" }
+" }}}
 
 
-" incsearch-easymotion {
+" incsearch-easymotion {{{
     " You can use other keymappings like <C-l> instead of <CR> if you want to
     " use these mappings as default search and somtimes want to move cursor with
     " EasyMotion.
@@ -382,10 +417,10 @@ let g:Lf_NormalMap = {
     noremap <silent><expr> /  incsearch#go(<SID>incsearch_config())
     noremap <silent><expr> ?  incsearch#go(<SID>incsearch_config({'command': '?'}))
     noremap <silent><expr> g/ incsearch#go(<SID>incsearch_config({'is_stay': 1}))
-" }
+" }}}
 
 
-" DoxygenToolkit {
+" DoxygenToolkit {{{
     " let g:DoxygenToolkit_commentType="C"
     " let g:DoxygenToolkit_briefTag_pre="===  FUNCTION  ======================================================================\n "
     let g:DoxygenToolkit_briefTag_funcName = "yes"
@@ -394,15 +429,15 @@ let g:Lf_NormalMap = {
     " let g:DoxygenToolkit_blockHeader="--------------------------------------------------------------------------"
     " let g:DoxygenToolkit_blockFooter="--------------------------------------------------------------------------"
     let g:DoxygenToolkit_authorName="Wu Xufeng"
-" }
+" }}}
 
 
-" ack {
+" ack {{{
     let g:ackprg = 'ag --vimgrep'
-" }
+" }}}
 
 
-" Ctrlp {
+" Ctrlp {{{
     set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
     " set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
 
@@ -424,4 +459,4 @@ let g:Lf_NormalMap = {
     endif
 
     " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-" }
+" }}}
