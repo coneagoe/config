@@ -48,8 +48,16 @@ let s:VIM_DIR = expand($HOME).'/.vim'
         Plug 'vim-scripts/DrawIt'
     " }}}
 
+    " Tabular {{{
+        Plug 'godlygeek/tabular'
+    " }}}
+
     " TaskList {{{
         Plug 'vim-scripts/TaskList.vim'
+    " }}}
+
+    " Diff {{{
+        Plug 'will133/vim-dirdiff'
     " }}}
 
     " other {{{
@@ -62,7 +70,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
     " }}}
 
     " tags {{{
-        Plug 'ludovicchabant/vim-gutentags'
+"        Plug 'ludovicchabant/vim-gutentags'
         Plug 'majutsushi/tagbar'
     " }}}
 
@@ -96,7 +104,10 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
         Plug 'Yggdroot/LeaderF'
 
+        " Ctrlp {{{
             Plug 'ctrlpvim/ctrlp.vim'
+            Plug 'tacahiroy/ctrlp-funky'
+        " }}}
 
         Plug 'justinmk/vim-dirvish'
 
@@ -140,15 +151,19 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
         " C++ {
             Plug 'octol/vim-cpp-enhanced-highlight', { 'for':['c', 'cpp'] }
+            Plug 'WolfgangMehner/c-support', { 'for': ['c', 'cpp'] }
         " }
 
         " python {
             Plug 'python-mode/python-mode', { 'branch': 'develop', 'for': 'python' }
         " }
 
-        " awk & bash & c & git & latex & matlab & perl & vim {
-            Plug 'WolfgangMehner/vim-plugins', { 'for':['bash', 'c', 'cpp', 'perl', 'vim', 'latex', 'matlab'] }
-            " Plug 'WolfgangMehner/vim-plugins', {'rtp': 'vim/'}
+        " perl {
+            Plug 'WolfgangMehner/perl-support', { 'for': 'perl' }
+        " }
+
+        " bash {
+            Plug 'WolfgangMehner/bash-support', { 'for': 'bash' }
         " }
 
         " Doxygen {
@@ -156,7 +171,8 @@ let s:VIM_DIR = expand($HOME).'/.vim'
         " }
 
         " Latex {
-            Plug 'lervag/vimtex', { 'for': ['latex'] }
+            Plug 'lervag/vimtex', { 'for': 'latex' }
+            Plug 'WolfgangMehner/latex-support', { 'for': 'latex' } 
         " }
 
         " lint {
@@ -165,7 +181,16 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
         " HTML & CSS {
             Plug 'mattn/emmet-vim', { 'for':['html', 'css'] }
-    " }
+        " }
+
+        " vim {
+            Plug 'WolfgangMehner/vim-support', { 'for': 'vim' }
+        " }
+    " }}}
+
+    " tmux {{{
+        Plug 'christoomey/vim-tmux-navigator'
+        Plug 'benmills/vimux'
     " }}}
 
     " Initialize plugin system
@@ -183,7 +208,6 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
 " General {{{
     set nocompatible
-    set autochdir
     " share clipboard between vim and system
     set clipboard+=unnamed
     " don't map key alt to menu
@@ -227,10 +251,18 @@ let s:VIM_DIR = expand($HOME).'/.vim'
     " }}}
 
     " tab {{{
+        function Tab4()
+            set tabstop=4 softtabstop=4 shiftwidth=4 smarttab expandtab
+        endfunction
+
+        function Tab2()
+            set tabstop=2 softtabstop=2 shiftwidth=2 smarttab expandtab
+        endfunction
+
         if filereadable("home")
-            set tabstop=4 softtabstop=4 expandtab shiftwidth=4 smarttab
+            call Tab4()
         else
-            set tabstop=2 softtabstop=2 expandtab shiftwidth=2 smarttab
+            call Tab2()
         endif
     " }}}
 
@@ -245,8 +277,9 @@ set diffopt+=iwhite
 " makefile
 autocmd FileType make setlocal noexpandtab
 
-" C++
+" C++ {{{
 au BufNewFile,BufRead *.impl set filetype=c++
+" }}}
 
 " tags {{{
 set tags=./.tags;,.tags
@@ -378,7 +411,7 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 
   "" let g:airline_left_sep = '▶'
   "" let g:airline_right_sep = '◀'
-"  let g:airline_theme='tomorrow'
+  let g:airline_theme='angr'
 " }}}
 
 
