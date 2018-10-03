@@ -18,7 +18,7 @@ run_ss()
         -k "-t 127.0.0.1:6443 -l :6500 -mode fast2"
 
         systemd_config "server"
-    else if [ -e /usr/config/ss/client ]; then
+    elif [ -e /usr/config/ss/client ]; then
         server_ip=$(cat /usr/config/ss/server_ip)
         docker run -dt --name ssclient -p 1080:1080 $ss_docker_url -m \
         "ss-local" -s "-s 127.0.0.1 -p 6500 -b 0.0.0.0 -l 1080 -m chacha20 -k $key --fast-open" -x \
