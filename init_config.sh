@@ -34,8 +34,7 @@ oh-my-zsh/master/tools/install.sh)"
 apt install vim
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-git clone https://github.com/coneagoe/vim_config.git
-ln -s vim_config/vim_config_plug ~/.vimrc
+ln -sf vim_config_plug ~/.vimrc
 vim +PlugInstall +qa
 
 
