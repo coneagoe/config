@@ -9,6 +9,13 @@ fi
 
 self_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$(basename $0)"
 
+
+older_docker ()
+{
+    [ $(docker -v | awk '{print $3}' | awk -F "." '{print $1}') < 14 ]
+}	# ----------  end of function older_docker  ----------
+
+
 run_ss()
 {
     if [ ! -e /usr/config/ss/key ]; then
@@ -68,7 +75,11 @@ EOF
 ss_not_run ()
 {
     local ss_docker_url=$1
-    [ -z $(docker container ls | grep $ss_docker_url) ]
+    if older_docker; then
+        [ -z $(docker ps | grep $ss_docker_url) ]
+    else
+        [ -z $(docker container ls | grep $ss_docker_url) ]
+    fi
 }	# ----------  end of function ss_not_run  ----------
 
 
@@ -88,7 +99,14 @@ ss_need_update ()
 ss_update ()
 {
     local image_id=$1
-    local container_id=$(docker container ls | grep $image_id | awk '{print $1}')
+    local containers=""
+    if older_docker; then
+        containers=$(docker ps)
+    else
+        containers=$(docker container ls)
+    fi
+    local container_id=$(echo $containers | grep $image_id | awk '{print $1}')
+
     if [ -n $container_id ]; then
         echo "Update docker container $container_id"
         docker container rm -f $container_id
