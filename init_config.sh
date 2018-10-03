@@ -26,7 +26,7 @@ set -o nounset                                  # Treat unset variables as an er
 echo "Install zsh"
 
 apt -y install zsh git curl
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" &
 
 echo "Install zsh complete"
 
