@@ -11,7 +11,12 @@ self_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )/$(basena
 
 run_ss()
 {
-    my key=$(cat /usr/config/ss/key)
+    if [ ! -e /usr/config/ss/key ]; then
+        echo "Configure password of ss under /usr/config/ss first"
+        exit 0
+    fi
+
+    local key=$(cat /usr/config/ss/key)
     if [ -e /usr/config/ss/server ]; then
         docker run -dt --name ssserver -p 6443:6443 -p 6500:6500/udp $ss_docker_url -m \
         "ss-server" -s "-s 0.0.0.0 -p 6443 -m chacha20 -k $key --fast-open" -x -e "kcpserver" \
