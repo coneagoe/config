@@ -23,39 +23,53 @@ set -o nounset                                  # Treat unset variables as an er
 #-------------------------------------------------------------------------------
 # zsh
 #-------------------------------------------------------------------------------
-apt install zsh git curl
+echo "Install zsh"
+
+apt -y install zsh git curl
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrusselv
 oh-my-zsh/master/tools/install.sh)"
+
+echo "Install zsh complete"
 
 
 #-------------------------------------------------------------------------------
 # vim
 #-------------------------------------------------------------------------------
-apt install vim
+echo "Install vim"
+
+apt -y install vim
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ln -sf vim_config_plug ~/.vimrc
 vim +PlugInstall +qa
 
+echo "Install vim complete"
+
 
 #-------------------------------------------------------------------------------
 # docker
 #-------------------------------------------------------------------------------
-apt install docker.io
+echo "Install docker"
+
+apt -y install docker.io
 systemctl start docker
 systemctl enable docker
 
 # ss
 ss_config.sh
 
-apt install at
+apt -y install at
 echo "reboot" | at midnight
+
+echo "Install docker complete"
 
 
 #-------------------------------------------------------------------------------
 # tmux
 #-------------------------------------------------------------------------------
-apt install tmux
+echo "Install tmux"
+
+apt -y install tmux
 
 # oh my tmux
 cd ~
@@ -64,23 +78,33 @@ ln -s -f .tmux/.tmux.conf
 cp .tmux/.tmux.conf.local .
 
 # powerline
-apt install python3
+apt -y install python3
 pip install powerline-status
 
 # font
-apt install fonts-powerline
+#apt -y install fonts-powerline
+
+echo "Install tmux complete"
 
 
 #-------------------------------------------------------------------------------
 # fzf
 #-------------------------------------------------------------------------------
+echo "Install fzf"
+
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 yes | ~/.fzf/install
+
+echo "Install fzf complete"
 
 
 #-------------------------------------------------------------------------------
 # ag
 #-------------------------------------------------------------------------------
-apt install silversearcher-ag
+echo "Install ag"
+
+apt -y install silversearcher-ag
+
+echo "Install ag complete"
 
 
