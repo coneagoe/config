@@ -26,8 +26,7 @@ set -o nounset                                  # Treat unset variables as an er
 echo "Install zsh"
 
 apt -y install zsh git curl
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrusselv
-oh-my-zsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrusselv/oh-my-zsh/master/tools/install.sh)"
 
 echo "Install zsh complete"
 
@@ -37,11 +36,7 @@ echo "Install zsh complete"
 #-------------------------------------------------------------------------------
 echo "Install vim"
 
-apt -y install vim
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-ln -sf vim_config_plug ~/.vimrc
-vim +PlugInstall +qa
+./vim_config.sh
 
 echo "Install vim complete"
 
@@ -56,7 +51,7 @@ systemctl start docker
 systemctl enable docker
 
 # ss
-ss_config.sh
+./ss_config.sh
 
 apt -y install at
 echo "reboot" | at midnight
