@@ -164,7 +164,8 @@ let s:VIM_DIR = expand($HOME).'/.vim'
         " }
 
         " bash {
-            Plug 'WolfgangMehner/bash-support', { 'for': 'bash' }
+"            Plug 'WolfgangMehner/bash-support', { 'for': 'bash' }
+            Plug 'WolfgangMehner/bash-support'
         " }
 
         " Doxygen {
@@ -498,4 +499,10 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
     endif
 
     " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+" }}}
+
+
+" xxx-support {{{
+    filetype on
+    filetype plugin on
 " }}}
