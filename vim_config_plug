@@ -130,6 +130,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
     " colorscheme {{{
         Plug 'tomasr/molokai'
+        Plug 'dracula/vim'
         " Plug 'altercation/vim-colors-solarized'
     " }}}
 
@@ -231,6 +232,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
     endif
 
     set cursorline
+    hi CursorLine term=bold cterm=bold guibg=Grey40
     set textwidth=100
 
     " search {{{
@@ -268,6 +270,8 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
     " auto remove trailing whitespace
     autocmd FileType c,cpp,python,perl autocmd BufWritePre <buffer> %s/\s\+$//e
+
+    filetype plugin on
 " }}}
 
 
@@ -411,7 +415,9 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 
   "" let g:airline_left_sep = '▶'
   "" let g:airline_right_sep = '◀'
-  let g:airline_theme='angr'
+  if s:hostname[0:3] == "FNSH"
+    let g:airline_theme='angr'
+  endif
 " }}}
 
 
