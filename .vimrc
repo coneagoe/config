@@ -116,6 +116,11 @@ let s:VIM_DIR = expand($HOME).'/.vim'
             Plug 'haya14busa/incsearch.vim'
             Plug 'haya14busa/incsearch-easymotion.vim'
         " }
+
+        " fzf {
+            Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+            Plug 'junegunn/fzf.vim'
+        " }
     " }}}
 
     " comments {{{
@@ -187,6 +192,10 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
         " vim {
             Plug 'WolfgangMehner/vim-support', { 'for': 'vim' }
+        " }
+
+        " jinja {
+            Plug 'Glench/Vim-Jinja2-Syntax'
         " }
     " }}}
 
