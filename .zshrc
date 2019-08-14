@@ -144,7 +144,7 @@ if [[ $(uname) == 'Linux' ]]; then
     alias ls='ls -hF --color=tty'
 
     if [[ $(hostname) != 'FNSHA189' ]]; then
-        ;
+        :
     fi
 fi
 
