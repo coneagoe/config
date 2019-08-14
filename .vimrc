@@ -62,6 +62,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
     " other {{{
         Plug 'vim-scripts/highlight.vim'
+"        Plug 'lfv89/vim-interestingwords'
         Plug 'myusuf3/numbers.vim'
     " }}}
 
