@@ -91,6 +91,7 @@ plugins=(
   fzf
   screen
   extract
+  docker
 )
 
 PROMPT=''
@@ -155,3 +156,5 @@ rp()
 }
 
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
