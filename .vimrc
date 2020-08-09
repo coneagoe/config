@@ -6,7 +6,7 @@ endif
 
 let s:hostname = system('hostname')
 
-let s:VIM_DIR = expand($HOME).'/.vim'
+"let s:VIM_DIR = expand($HOME).'/.vim'
 " }}}
 
 
@@ -18,12 +18,18 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
     " Make sure you use single quotes
 
+    " Language Server Protocol{{{
+        Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"        Plug 'prabirshrestha/async.vim'
+"        Plug 'prabirshrestha/vim-lsp'
+"        Plug 'mattn/vim-lsp-settings'
+    " }}}
+
     " autocomplete {{{
-        Plug 'ervandew/supertab'
+        " Plug 'ervandew/supertab'
         Plug 'tpope/vim-surround'
-        Plug 'Shougo/deoplete.nvim'
-        Plug 'roxma/nvim-yarp'
-        Plug 'roxma/vim-hug-neovim-rpc'
+"        Plug 'prabirshrestha/asyncomplete.vim'
+"        Plug 'prabirshrestha/asyncomplete-lsp.vim'
     " }}}
 
     " search {{{
@@ -62,7 +68,14 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
     " other {{{
         Plug 'vim-scripts/highlight.vim'
+"        Plug 'lfv89/vim-interestingwords'
         Plug 'myusuf3/numbers.vim'
+
+        " match parentheses in different colors
+        Plug 'frazrepo/vim-rainbow'
+
+        " show keybindings in popup
+"        Plug 'liuchengxu/vim-which-key'
     " }}}
 
     " customized menu {{{
@@ -102,13 +115,6 @@ let s:VIM_DIR = expand($HOME).'/.vim'
     " location {{{
         Plug 'tpope/vim-unimpaired'
 
-        Plug 'Yggdroot/LeaderF'
-
-        " Ctrlp {{{
-            Plug 'ctrlpvim/ctrlp.vim'
-            Plug 'tacahiroy/ctrlp-funky'
-        " }}}
-
         Plug 'justinmk/vim-dirvish'
 
         " vim-easymotion {
@@ -118,7 +124,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
         " }
 
         " fzf {
-            Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+            Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
             Plug 'junegunn/fzf.vim'
         " }
     " }}}
@@ -158,6 +164,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
         " C++ {
             Plug 'octol/vim-cpp-enhanced-highlight', { 'for':['c', 'cpp'] }
             Plug 'WolfgangMehner/c-support', { 'for': ['c', 'cpp'] }
+"            Plug 'vim-scripts/refactor', { 'for': ['c', 'cpp'] }
         " }
 
         " python {
@@ -183,7 +190,8 @@ let s:VIM_DIR = expand($HOME).'/.vim'
         " }
 
         " lint {
-            Plug 'w0rp/ale', { 'for':['bash', 'c', 'cpp', 'perl', 'vim', 'latex', 'matlab'] }
+            Plug 'vim-syntastic/syntastic', { 'for':['sh', 'c', 'cpp', 'perl', 'python'] }
+"            Plug 'dense-analysis/ale', { 'for':['sh', 'c', 'cpp', 'perl', 'vim', 'latex', 'matlab'] }
         " }
 
         " HTML & CSS {
@@ -202,6 +210,10 @@ let s:VIM_DIR = expand($HOME).'/.vim'
     " tmux {{{
         Plug 'christoomey/vim-tmux-navigator'
         Plug 'benmills/vimux'
+    " }}}
+
+    " kernel coding style {{{
+        Plug 'vivien/vim-linux-coding-style'
     " }}}
 
     " Initialize plugin system
@@ -225,6 +237,7 @@ let s:VIM_DIR = expand($HOME).'/.vim'
     set winaltkeys=no
     " show title in console title bar
     set title
+    let g:rainbow_active = 1
 " }}}
 
 
@@ -235,11 +248,11 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 
 
 " Editor {{{
-    if filereadable("home")
+"    if filereadable("home")
     colorscheme molokai
-    else
-    colorscheme koehler
-    endif
+"    else
+"    colorscheme koehler
+"    endif
 
     set cursorline
     hi CursorLine term=bold cterm=bold guibg=Grey40
@@ -285,8 +298,29 @@ let s:VIM_DIR = expand($HOME).'/.vim'
 " }}}
 
 
-" diff
-set diffopt+=iwhite
+" diff {{{
+if &diff
+    set diffopt+=iwhite
+endif
+
+function IwhiteToggle()
+    if &diffopt =~ 'iwhite'
+        set diffopt-=iwhite
+    else
+        set diffopt+=iwhite
+    endif
+endfunction
+
+function IcaseToggle()
+    if &diffopt =~ 'icase'
+        set diffopt-=icase
+    else
+        set diffopt+=icase
+    endif
+endfunction
+
+" }}}
+
 
 " makefile
 autocmd FileType make setlocal noexpandtab
@@ -295,8 +329,9 @@ autocmd FileType make setlocal noexpandtab
 au BufNewFile,BufRead *.impl set filetype=c++
 " }}}
 
+
 " tags {{{
-set tags=./.tags;,.tags
+set tags=./.tags;,.tags;,tags
 
 " set project identification file for gutentags
 let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
@@ -305,16 +340,16 @@ let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
 let g:gutentags_ctags_tagfile = '.tags'
 
 " put all tags generated in ~/.cache/tags to avoid polluting project
-let s:vim_tags = expand('~/.cache/tags')
-let g:gutentags_cache_dir = s:vim_tags
+"let s:vim_tags = expand('~/.cache/tags')
+"let g:gutentags_cache_dir = s:vim_tags
 
 let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
 let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
 let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
 
-if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
-endif
+"if !isdirectory(s:vim_tags)
+"   silent! call mkdir(s:vim_tags, 'p')
+"endif
 " }}}
 
 
@@ -336,47 +371,49 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 " }}}
 
 
-" lint {{{
-    let g:ale_linters_explicit = 1
-    let g:ale_completion_delay = 500
-    let g:ale_echo_delay = 20
-    let g:ale_lint_delay = 500
-    let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-    let g:ale_lint_on_text_changed = 'normal'
-    let g:ale_lint_on_insert_leave = 1
-    let g:airline#extensions#ale#enabled = 1
+" syntastic {{{
+    set statusline+=%#warningmsg#
+    set statusline+=%{SyntasticStatuslineFlag()}
+    set statusline+=%*
 
-    let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-    let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
-    let g:ale_c_cppcheck_options = ''
-    let g:ale_cpp_cppcheck_options = ''
-
-    let g:ale_sign_error = "\ue009\ue009"
-    hi! clear SpellBad
-    hi! clear SpellCap
-    hi! clear SpellRare
-    hi! SpellBad gui=undercurl guisp=red
-    hi! SpellCap gui=undercurl guisp=blue
-    hi! SpellRare gui=undercurl guisp=magenta
+    let g:syntastic_always_populate_loc_list = 1
+    let g:syntastic_auto_loc_list = 1
+    let g:syntastic_check_on_open = 1
+    let g:syntastic_check_on_wq = 0
 " }}}
 
 
-" YCM {{{
-    let g:ycm_add_preview_to_completeopt = 0
-    let g:ycm_show_diagnostics_ui = 0
-    let g:ycm_server_log_level = 'info'
-    let g:ycm_min_num_identifier_candidate_chars = 2
-    let g:ycm_collect_identifiers_from_comments_and_strings = 1
-    let g:ycm_complete_in_strings=1
-    let g:ycm_key_invoke_completion = '<c-z>'
-    set completeopt=menu,menuone
+" ale {{{
+    let g:ale_sign_column_always = 1
+    let g:ale_lint_on_text_changed = 'never'
+    let g:ale_lint_on_insert_leave = 0
+    let g:ale_lint_on_enter = 0
 
-    noremap <c-z> <NOP>
+"    let g:ale_linters = {
+"                \   'python': ['pylint'],
+"                \}
 
-    let g:ycm_semantic_triggers =  {
-           \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
-           \ 'cs,lua,javascript': ['re!\w{2}'],
-           \ }
+"    let g:ale_linters_explicit = 1
+"    let g:ale_completion_delay = 500
+"    let g:ale_echo_delay = 20
+"    let g:ale_lint_delay = 500
+"    let g:ale_echo_msg_format = '[%linter%] %code: %%s'
+"    let g:ale_lint_on_text_changed = 'normal'
+"    let g:ale_lint_on_insert_leave = 1
+"    let g:airline#extensions#ale#enabled = 1
+"
+"    let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+"    let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
+"    let g:ale_c_cppcheck_options = ''
+"    let g:ale_cpp_cppcheck_options = ''
+"
+"    let g:ale_sign_error = "\ue009\ue009"
+"    hi! clear SpellBad
+"    hi! clear SpellCap
+"    hi! clear SpellRare
+"    hi! SpellBad gui=undercurl guisp=red
+"    hi! SpellCap gui=undercurl guisp=blue
+"    hi! SpellRare gui=undercurl guisp=magenta
 " }}}
 
 
@@ -385,49 +422,20 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 " }}}
 
 
-" LeaderF {{{
-    let g:Lf_ShortcutF = '<c-p>'
-    let g:Lf_ShortcutB = '<m-n>'
-    noremap <c-n> :LeaderfMru<cr>
-    noremap <m-p> :LeaderfFunction!<cr>
-    noremap <m-n> :LeaderfBuffer<cr>
-    noremap <m-m> :LeaderfTag<cr>
-    let g:Lf_StlSeparator = { 'left': '', 'right': '', 'font': '' }
-
-    let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
-    let g:Lf_WorkingDirectoryMode = 'Ac'
-    let g:Lf_WindowHeight = 0.30
-    let g:Lf_CacheDirectory = expand('~/.vim/cache')
-    let g:Lf_ShowRelativePath = 0
-    let g:Lf_HideHelp = 1
-    let g:Lf_StlColorscheme = 'powerline'
-    let g:Lf_PreviewResult = {'Function':0}
-
-    let g:Lf_NormalMap = {
-	\ "File":   [["<ESC>", ':exec g:Lf_py "fileExplManager.quit()"<CR>']],
-	\ "Buffer": [["<ESC>", ':exec g:Lf_py "bufExplManager.quit()"<CR>']],
-	\ "Mru":    [["<ESC>", ':exec g:Lf_py "mruExplManager.quit()"<CR>']],
-	\ "Tag":    [["<ESC>", ':exec g:Lf_py "tagExplManager.quit()"<CR>']],
-	\ "Function":    [["<ESC>", ':exec g:Lf_py "functionExplManager.quit()"<CR>']],
-	\ "Colorscheme":    [["<ESC>", ':exec g:Lf_py "colorschemeExplManager.quit()"<CR>']],
-	\ }
-" }}}
-
-
 " airline {{{
-"  let g:airline#extensions#tabline#enabled = 1
-  "let g:airline#extensions#tabline#show_buffers = 1
-  "let g:airline#extensions#bufferline#enabled = 1
+  let g:airline#extensions#tabline#enabled = 1
+  let g:airline#extensions#tabline#show_buffers = 1
+  let g:airline#extensions#bufferline#enabled = 1
 
   "" if !exists('g:airline_symbols')
   ""   let g:airline_symbols = {}
   "" endif
 
-  "" let g:airline_left_sep = '▶'
-  "" let g:airline_right_sep = '◀'
-  if s:hostname[0:3] == "FNSH"
+"  let g:airline_left_sep = '▶'
+"  let g:airline_right_sep = '◀'
+"  if s:hostname[0:3] == "FNSH"
     let g:airline_theme='angr'
-  endif
+"  endif
 " }}}
 
 
@@ -486,32 +494,204 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 " }}}
 
 
-" Ctrlp {{{
-    set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
-    " set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
-
-    let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
-    let g:ctrlp_custom_ignore = {
-            \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-            \ 'file': '\v\.(exe|so|dll)$',
-            \ 'link': 'some_bad_symbolic_links',
-            \ }
-
-    if executable('ag')
-        " Use Ag over Grep
-        set grepprg=ag\ --nogroup\ --nocolor
-
-        " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-        let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-    else
-        let g:ctrlp_user_command = 'find %s -type f'
-    endif
-
-    " let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
-" }}}
-
-
 " xxx-support {{{
     filetype on
     filetype plugin on
 " }}}
+
+
+" vim-dirdiff'{{{
+    let g:DirDiffExcludes = "CVS,*.class,*.o,.*.swp,*.exe,.hg,.git"
+    let g:DirDiffIgnore = "Id:,Revision:,Date:"
+    let g:DirDiffAddArgs = "-w"
+" }}}
+
+
+" coc.nvim {{{
+
+    " TextEdit might fail if hidden is not set.
+    set hidden
+
+    " Some servers have issues with backup files, see #649.
+    set nobackup
+    set nowritebackup
+
+    " Give more space for displaying messages.
+    set cmdheight=2
+
+    " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+    " delays and poor user experience.
+    set updatetime=300
+    
+    " Don't pass messages to |ins-completion-menu|.
+    set shortmess+=c
+    
+    " Always show the signcolumn, otherwise it would shift the text each time
+    " diagnostics appear/become resolved.
+    set signcolumn=yes
+    
+    " Use tab for trigger completion with characters ahead and navigate.
+    " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+    " other plugin before putting this into your config.
+    inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+    
+    function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
+
+    " Use <c-space> to trigger completion.
+    inoremap <silent><expr> <c-space> coc#refresh()
+
+    " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+    " position. Coc only does snippet and additional edit on confirm.
+    " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+    if exists('*complete_info')
+        inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+    else
+        inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    endif
+
+    " Use `[g` and `]g` to navigate diagnostics
+    nmap <silent> [g <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+    " GoTo code navigation.
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references)
+
+    " Use K to show documentation in preview window.
+    nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+    function! s:show_documentation()
+        if (index(['vim','help'], &filetype) >= 0)
+            execute 'h '.expand('<cword>')
+        else
+            call CocAction('doHover')
+        endif
+    endfunction
+
+    " Highlight the symbol and its references when holding the cursor.
+    autocmd CursorHold * silent call CocActionAsync('highlight')
+
+    " Symbol renaming.
+    nmap <leader>rn <Plug>(coc-rename)
+
+    " Formatting selected code.
+    xmap <leader>f  <Plug>(coc-format-selected)
+    nmap <leader>f  <Plug>(coc-format-selected)
+
+    augroup mygroup
+        autocmd!
+        " Setup formatexpr specified filetype(s).
+        autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+        " Update signature help on jump placeholder.
+        autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+    augroup end
+
+    " Applying codeAction to the selected region.
+    " Example: `<leader>aap` for current paragraph
+    xmap <leader>a  <Plug>(coc-codeaction-selected)
+    nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+    " Remap keys for applying codeAction to the current line.
+    nmap <leader>ac  <Plug>(coc-codeaction)
+    " Apply AutoFix to problem on the current line.
+    nmap <leader>qf  <Plug>(coc-fix-current)
+
+    " Introduce function text object
+    " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+    xmap if <Plug>(coc-funcobj-i)
+    xmap af <Plug>(coc-funcobj-a)
+    omap if <Plug>(coc-funcobj-i)
+    omap af <Plug>(coc-funcobj-a)
+
+    " Use <TAB> for selections ranges.
+    " NOTE: Requires 'textDocument/selectionRange' support from the language server.
+    " coc-tsserver, coc-python are the examples of servers that support it.
+    nmap <silent> <TAB> <Plug>(coc-range-select)
+    xmap <silent> <TAB> <Plug>(coc-range-select)
+
+    " Add `:Format` command to format current buffer.
+    command! -nargs=0 Format :call CocAction('format')
+
+    " Add `:Fold` command to fold current buffer.
+    command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+    " Add `:OR` command for organize imports of the current buffer.
+    command! -nargs=0 OR   :call CocAction('runCommand', 'editor.action.organizeImport')
+
+    " Add (Neo)Vim's native statusline support.
+    " NOTE: Please see `:h coc-status` for integrations with external plugins that
+    " provide custom statusline: lightline.vim, vim-airline.
+    set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+    " Mappings using CoCList:
+    " Show all diagnostics.
+    nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+    " Manage extensions.
+    nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+    " Show commands.
+    nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+    " Find symbol of current document.
+    nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+    " Search workspace symbols.
+    nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+    " Do default action for next item.
+    nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+    " Do default action for previous item.
+    nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+    " Resume latest coc list.
+    nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" }}}
+
+
+" asyncomplete {{{
+    let g:asyncomplete_auto_popup = 0
+    inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+    inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+" }}}
+
+
+" cscope {{{
+    " auto load cscope
+    if filereadable("cscope.out")
+        cs add cscope.out
+    endif
+" }}}
+
+
+"" vim-which-key {{{
+"    nnoremap <silent> <leader>      :<c-u>WhichKey '\'<CR>
+"    nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+"    let g:which_key_map['w'] = {
+"          \ 'name' : '+windows' ,
+"          \ 'w' : ['<C-W>w'     , 'other-window']          ,
+"          \ 'd' : ['<C-W>c'     , 'delete-window']         ,
+"          \ '-' : ['<C-W>s'     , 'split-window-below']    ,
+"          \ '|' : ['<C-W>v'     , 'split-window-right']    ,
+"          \ '2' : ['<C-W>v'     , 'layout-double-columns'] ,
+"          \ 'h' : ['<C-W>h'     , 'window-left']           ,
+"          \ 'j' : ['<C-W>j'     , 'window-below']          ,
+"          \ 'l' : ['<C-W>l'     , 'window-right']          ,
+"          \ 'k' : ['<C-W>k'     , 'window-up']             ,
+"          \ 'H' : ['<C-W>5<'    , 'expand-window-left']    ,
+"          \ 'J' : ['resize +5'  , 'expand-window-below']   ,
+"          \ 'L' : ['<C-W>5>'    , 'expand-window-right']   ,
+"          \ 'K' : ['resize -5'  , 'expand-window-up']      ,
+"          \ '=' : ['<C-W>='     , 'balance-window']        ,
+"          \ 's' : ['<C-W>s'     , 'split-window-below']    ,
+"          \ 'v' : ['<C-W>v'     , 'split-window-below']    ,
+"          \ '?' : ['Windows'    , 'fzf-window']            ,
+"          \ }
+"" }}}
+
+
