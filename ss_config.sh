@@ -30,6 +30,7 @@ run_ss()
         -k "-t 127.0.0.1:6443 -l :6500 -mode fast2"
 
         systemd_config "server"
+        restart_ss_config
     elif [ -e /usr/config/ss/client ]; then
         if [ ! -e /usr/config/ss/server_ip ]; then
             echo "Specify ss server ip under /usr/config/ss first"
@@ -54,7 +55,7 @@ systemd_config ()
 {
     local cs=$1
 
-cat > /etc/systemd/system/ss$cs.service << EOF
+    cat > /etc/systemd/system/ss$cs.service << EOF
 [Unit]
 Description=start ss $cs
 Requires=docker.service
@@ -70,6 +71,20 @@ EOF
 
     systemctl enable ss$cs
 }	# ----------  end of function systemd_config  ----------
+
+
+restart_ss_config ()
+{
+    mkdir /tools
+
+    cat > /tools/ssserver.sh << EOF
+#!/usr/bin/sh
+
+docker restart ssserver
+EOF
+
+    chmod +x /tools/ssserver.sh
+}	# ----------  end of function restart_ss_config  ----------
 
 
 ss_not_run ()
