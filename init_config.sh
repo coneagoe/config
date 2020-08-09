@@ -19,26 +19,31 @@
 
 set -o nounset                                  # Treat unset variables as an error
 
+source $(pwd)/common.sh
+
 
 #-------------------------------------------------------------------------------
 # zsh
 #-------------------------------------------------------------------------------
-echo "Install zsh"
+installer=$(get_installer)
+if ! is_installed zsh; then
+  $installer install -y zsh
+fi
 
-apt -y install zsh git curl
+if ! is_installed git; then
+  $installer install -y git
+fi
+
+if ! is_installed curl; then
+  $installer install -y curl
+fi
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" &
-
-echo "Install zsh complete"
 
 
 #-------------------------------------------------------------------------------
 # vim
 #-------------------------------------------------------------------------------
-echo "Install vim"
-
 ./vim_config.sh
-
-echo "Install vim complete"
 
 
 #-------------------------------------------------------------------------------
