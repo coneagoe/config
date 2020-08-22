@@ -27,15 +27,15 @@ source $(pwd)/common.sh
 #-------------------------------------------------------------------------------
 installer=$(get_installer)
 if ! is_installed zsh; then
-  $installer install -y zsh
+    $installer install -y zsh
 fi
 
 if ! is_installed git; then
-  $installer install -y git
+    $installer install -y git
 fi
 
 if ! is_installed curl; then
-  $installer install -y curl
+    $installer install -y curl
 fi
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" &
 
@@ -49,19 +49,10 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 #-------------------------------------------------------------------------------
 # docker
 #-------------------------------------------------------------------------------
-echo "Install docker"
-
-apt -y install docker.io
-systemctl start docker
-systemctl enable docker
+./install_docker.sh
 
 # ss
 ./ss_config.sh
-
-apt -y install at
-echo "reboot" | at midnight
-
-echo "Install docker complete"
 
 
 #-------------------------------------------------------------------------------

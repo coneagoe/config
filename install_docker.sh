@@ -27,6 +27,7 @@ yum-config-manager \
 
 yum install -y docker-ce docker-ce-cli containerd.io && \ 
   systemctl start docker && \
+  systemctl enable docker && \
   docker run hello-world
 
 
