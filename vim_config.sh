@@ -19,8 +19,16 @@
 
 set -o nounset                                  # Treat unset variables as an error
 
-apt -y install vim
+source $(pwd)/common.sh
+
+if ! is_installed vim; then
+  installer=$(get_installer)
+  $installer install -y vim
+fi
+
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-ln -sf vim_config_plug ~/.vimrc
+
+ln -sf $(pwd)/.vimrc ~/.vimrc
+
 vim +PlugInstall +qa
