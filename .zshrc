@@ -21,7 +21,9 @@ bindkey '^R' history-incremental-search-backward
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-source ~/.company_config.sh
+if [ -e $HOME/.company_config.sh ]; then
+  source $HOME/.company_config.sh
+fi
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -128,33 +130,23 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias less='less -r'
 
+alias ls='ls -hF --color=tty'
 alias ll='ls -l'
 alias la='ls -A'
+alias dir='ls --color=auto --format=vertical'
+alias vdir='ls --color=auto --format=long'
 
+alias grep='grep --color'
 
 alias tftp='tftp -v -m binary'
 
-
 alias hd="hg diff -w"
-
-
-if [[ $(uname) == 'Linux' ]]; then
-    alias grep='grep --color'
-    alias dir='ls --color=auto --format=vertical'
-    alias vdir='ls --color=auto --format=long'
-    alias ls='ls -hF --color=tty'
-
-    if [[ $(hostname) != 'FNSHA189' ]]; then
-        :
-    fi
-fi
 
 
 rp()
 {
     eval '!!:gs/$1/$2/'
 }
-
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
