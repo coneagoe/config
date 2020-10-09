@@ -45,15 +45,7 @@ source $(pwd)/common.sh
 #-------------------------------------------------------------------------------
 # tmux
 #-------------------------------------------------------------------------------
-echo "Install tmux"
-
-apt -y install tmux
-
-# oh my tmux
-cd ~
-git clone https://github.com/gpakosz/.tmux.git
-ln -s -f .tmux/.tmux.conf
-cp .tmux/.tmux.conf.local .
+./init_tmux.sh
 
 # powerline
 apt -y install python3
