@@ -85,6 +85,7 @@ let s:hostname = system('hostname')
     " tags {{{
 "        Plug 'ludovicchabant/vim-gutentags'
         Plug 'majutsushi/tagbar'
+        Plug 'joe-skb7/cscope-maps'
     " }}}
 
     " align {{{
