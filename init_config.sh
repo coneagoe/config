@@ -25,20 +25,7 @@ source $(pwd)/common.sh
 #-------------------------------------------------------------------------------
 # zsh
 #-------------------------------------------------------------------------------
-installer=$(get_installer)
-if ! is_installed zsh; then
-    $installer install -y zsh
-fi
-
-if ! is_installed git; then
-    $installer install -y git
-fi
-
-if ! is_installed curl; then
-    $installer install -y curl
-fi
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" &
-
+./init_zsh.sh
 
 #-------------------------------------------------------------------------------
 # vim
