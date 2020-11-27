@@ -148,5 +148,7 @@ rp()
     eval '!!:gs/$1/$2/'
 }
 
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+[ -f ~/.zshrc_local ] && source ~/.zshrc_local
+
