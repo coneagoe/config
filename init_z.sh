@@ -21,7 +21,11 @@ set -o nounset                                  # Treat unset variables as an er
 
 source $(pwd)/common.sh
 
-if [ ! -e z ]; then
-    git clone https://github.com/rupa/z.git
-    echo "source $(pwd)/z/z.sh" >> $HOME/.zshrc_local
-fi
+#if [ ! -e z ]; then
+#    git clone https://github.com/rupa/z.git
+#    echo "source $(pwd)/z/z.sh" >> $HOME/.zshrc_local
+#fi
+
+git clone https://github.com/skywind3000/z.lua.git
+z_path=$(pwd)/z.lua/z.lua
+echo 'eval "$(lua '$z_path' --init zsh enhanced once fzf)"' >> $HOME/.zshrc_local

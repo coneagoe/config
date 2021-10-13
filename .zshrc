@@ -86,15 +86,16 @@ plugins=(
   git
   vi-mode
   history
-  #history-substring-search
   rsync
-  tmux
   pip
   fzf
   screen
   extract
   docker
+  ripgrep
 )
+#history-substring-search
+#tmux
 
 PROMPT=''
 
@@ -148,7 +149,12 @@ rp()
     eval '!!:gs/$1/$2/'
 }
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# fzf
+#[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_BASE=$(which fzf)
+DISABLE_FZF_AUTO_COMPLETION="false"
+DISABLE_FZF_KEY_BINDINGS="false"
 
+# z.sh
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
 

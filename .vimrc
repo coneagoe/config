@@ -86,6 +86,7 @@ let s:hostname = system('hostname')
 "        Plug 'ludovicchabant/vim-gutentags'
         Plug 'majutsushi/tagbar'
         Plug 'joe-skb7/cscope-maps'
+        Plug 'lvht/tagbar-markdown'
     " }}}
 
     " align {{{
@@ -142,7 +143,7 @@ let s:hostname = system('hostname')
 
     " colorscheme {{{
         Plug 'tomasr/molokai'
-        Plug 'dracula/vim'
+        Plug 'joshdick/onedark.vim'
         " Plug 'altercation/vim-colors-solarized'
     " }}}
 
@@ -160,7 +161,7 @@ let s:hostname = system('hostname')
 
         " Plug 'Valloric/YouCompleteMe', { 'for':['c', 'cpp'] }
 
-        Plug 'Shougo/echodoc.vim' 
+        Plug 'Shougo/echodoc.vim'
 
         " C++ {
             Plug 'octol/vim-cpp-enhanced-highlight', { 'for':['c', 'cpp'] }
@@ -187,7 +188,7 @@ let s:hostname = system('hostname')
 
         " Latex {
             Plug 'lervag/vimtex', { 'for': 'latex' }
-            Plug 'WolfgangMehner/latex-support', { 'for': 'latex' } 
+            Plug 'WolfgangMehner/latex-support', { 'for': 'latex' }
         " }
 
         " lint {
@@ -210,6 +211,10 @@ let s:hostname = system('hostname')
         " markdown {
             Plug 'plasticboy/vim-markdown'
         " }
+
+        " xml {
+            Plug 'sukima/xmledit', { 'for': 'xml' }
+        " }
     " }}}
 
     " tmux {{{
@@ -217,8 +222,13 @@ let s:hostname = system('hostname')
         Plug 'benmills/vimux'
     " }}}
 
-    " kernel coding style {{{
+    " kernel {{{
         Plug 'vivien/vim-linux-coding-style'
+        Plug 'coneagoe/config_in'
+    " }}}
+
+    " hex {{{
+        Plug 'rootkiter/vim-hexedit'
     " }}}
 
     " Initialize plugin system
@@ -254,6 +264,7 @@ let s:hostname = system('hostname')
 
 " Editor {{{
 "    if filereadable("home")
+"    colorscheme onedark
     colorscheme molokai
 "    else
 "    colorscheme koehler
@@ -385,6 +396,8 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
     let g:syntastic_auto_loc_list = 1
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
+
+    let g:syntastic_c_config_file = '.syntastic_rc'
 " }}}
 
 
@@ -527,14 +540,14 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 "    " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 "    " delays and poor user experience.
 "    set updatetime=300
-"    
+"
 "    " Don't pass messages to |ins-completion-menu|.
 "    set shortmess+=c
-"    
+"
 "    " Always show the signcolumn, otherwise it would shift the text each time
 "    " diagnostics appear/become resolved.
 "    set signcolumn=yes
-"    
+"
 "    " Use tab for trigger completion with characters ahead and navigate.
 "    " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 "    " other plugin before putting this into your config.
@@ -543,7 +556,7 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 "        \ <SID>check_back_space() ? "\<TAB>" :
 "        \ coc#refresh()
 "    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-"    
+"
 "    function! s:check_back_space() abort
 "        let col = col('.') - 1
 "        return !col || getline('.')[col - 1]  =~# '\s'
