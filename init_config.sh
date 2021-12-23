@@ -5,14 +5,14 @@
 #
 #         USAGE: ./init_config.sh
 #
-#   DESCRIPTION: 
+#   DESCRIPTION:
 #
 #       OPTIONS: ---
 #  REQUIREMENTS: ---
 #          BUGS: ---
 #         NOTES: ---
 #        AUTHOR: Coneagoe (), coneagoe@gmail.com
-#  ORGANIZATION: 
+#  ORGANIZATION:
 #       CREATED: 10/ 3/2018 10:14:35 AM
 #      REVISION:  ---
 #===============================================================================
@@ -40,10 +40,10 @@ source $(pwd)/common.sh
 #-------------------------------------------------------------------------------
 # docker
 #-------------------------------------------------------------------------------
-./install_docker.sh
+#./install_docker.sh
 
 # ss
-./ss_config.sh
+#./ss_config.sh
 
 
 #-------------------------------------------------------------------------------
@@ -52,11 +52,13 @@ source $(pwd)/common.sh
 ./init_tmux.sh
 
 # powerline
-apt -y install python3
+if ! is_installed python3; then
+  installer python3
+fi
 pip install powerline-status
 
 # font
-#apt -y install fonts-powerline
+# apt -y install fonts-powerline
 
 echo "Install tmux complete"
 
@@ -73,12 +75,20 @@ echo "Install fzf complete"
 
 
 #-------------------------------------------------------------------------------
-# ag
+# rg
 #-------------------------------------------------------------------------------
-echo "Install ag"
-
-apt -y install silversearcher-ag
-
-echo "Install ag complete"
+if ! is_installed rg; then 
+  installer rg
+fi
 
 
+#-------------------------------------------------------------------------------
+# git
+#-------------------------------------------------------------------------------
+ln -sf $(pwd)/.gitconfig $HOME/.gitconfig
+
+
+#-------------------------------------------------------------------------------
+# gdb
+#-------------------------------------------------------------------------------
+ln -sf $(pwd)/.gdbinit $HOME/.gdbinit
