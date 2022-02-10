@@ -215,6 +215,10 @@ let s:hostname = system('hostname')
         " xml {
             Plug 'sukima/xmledit', { 'for': 'xml' }
         " }
+
+        " risc-v assembly {
+            Plug 'kylelaker/riscv.vim', { 'for': 'S' }
+        " }
     " }}}
 
     " tmux {{{
