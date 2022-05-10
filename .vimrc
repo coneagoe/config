@@ -171,6 +171,7 @@ let s:hostname = system('hostname')
 
         " python {
             Plug 'python-mode/python-mode', { 'branch': 'develop', 'for': 'python' }
+            Plug 'davidhalter/jedi-vim', { 'for': 'python' }
         " }
 
         " perl {

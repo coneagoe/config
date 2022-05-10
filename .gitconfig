@@ -12,3 +12,5 @@
 	conflictstyle = diff3
 [mergetool]
 	prompt = false
+[alias]
+	dfw = diff --ignore-space-change
