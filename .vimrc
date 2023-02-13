@@ -67,7 +67,8 @@ let s:hostname = system('hostname')
     " }}}
 
     " other {{{
-        Plug 'vim-scripts/highlight.vim'
+"        Plug 'vim-scripts/highlight.vim'
+        Plug 'azabiong/vim-highlighter'
 "        Plug 'lfv89/vim-interestingwords'
         Plug 'myusuf3/numbers.vim'
 
@@ -215,6 +216,10 @@ let s:hostname = system('hostname')
         " xml {
             Plug 'sukima/xmledit', { 'for': 'xml' }
         " }
+
+        " yaml {
+            Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
+        " }
     " }}}
 
     " tmux {{{
@@ -265,9 +270,9 @@ let s:hostname = system('hostname')
 " Editor {{{
 "    if filereadable("home")
 "    colorscheme onedark
-    colorscheme molokai
+"    colorscheme molokai
 "    else
-"    colorscheme koehler
+    colorscheme koehler
 "    endif
 
     set cursorline
