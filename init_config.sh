@@ -5,14 +5,14 @@
 #
 #         USAGE: ./init_config.sh
 #
-#   DESCRIPTION: 
+#   DESCRIPTION:
 #
 #       OPTIONS: ---
 #  REQUIREMENTS: ---
 #          BUGS: ---
 #         NOTES: ---
 #        AUTHOR: Coneagoe (), coneagoe@gmail.com
-#  ORGANIZATION: 
+#  ORGANIZATION:
 #       CREATED: 10/ 3/2018 10:14:35 AM
 #      REVISION:  ---
 #===============================================================================
@@ -25,7 +25,12 @@ source $(pwd)/common.sh
 #-------------------------------------------------------------------------------
 # zsh
 #-------------------------------------------------------------------------------
-./init_zsh.sh
+#./init_zsh.sh
+
+#-------------------------------------------------------------------------------
+# scripts
+#-------------------------------------------------------------------------------
+git clone https://github.com/coneagoe/scripts.git $HOME/scripts
 
 #-------------------------------------------------------------------------------
 # z.sh
@@ -35,15 +40,15 @@ source $(pwd)/common.sh
 #-------------------------------------------------------------------------------
 # vim
 #-------------------------------------------------------------------------------
-./vim_config.sh
+#./vim_config.sh
 
 #-------------------------------------------------------------------------------
 # docker
 #-------------------------------------------------------------------------------
-./install_docker.sh
+#./install_docker.sh
 
 # ss
-./ss_config.sh
+#./ss_config.sh
 
 
 #-------------------------------------------------------------------------------
@@ -52,11 +57,13 @@ source $(pwd)/common.sh
 ./init_tmux.sh
 
 # powerline
-apt -y install python3
+if ! is_installed python3; then
+  installer python3
+fi
 pip install powerline-status
 
 # font
-#apt -y install fonts-powerline
+# apt -y install fonts-powerline
 
 echo "Install tmux complete"
 
@@ -65,20 +72,30 @@ echo "Install tmux complete"
 # fzf
 #-------------------------------------------------------------------------------
 echo "Install fzf"
-
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-yes | ~/.fzf/install
+if ! is_installed fzf; then
+# git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+# yes | ~/.fzf/install
+  installer fzf
+fi
 
 echo "Install fzf complete"
 
 
 #-------------------------------------------------------------------------------
-# ag
+# rg
 #-------------------------------------------------------------------------------
-echo "Install ag"
-
-apt -y install silversearcher-ag
-
-echo "Install ag complete"
+if ! is_installed rg; then
+  installer ripgrep
+fi
 
 
+#-------------------------------------------------------------------------------
+# git
+#-------------------------------------------------------------------------------
+ln -sf $(pwd)/.gitconfig $HOME/.gitconfig
+
+
+#-------------------------------------------------------------------------------
+# gdb
+#-------------------------------------------------------------------------------
+ln -sf $(pwd)/.gdbinit $HOME/.gdbinit

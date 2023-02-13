@@ -22,13 +22,12 @@ set -o nounset                                  # Treat unset variables as an er
 source $(pwd)/common.sh
 
 if ! is_installed vim; then
-  installer=$(get_installer)
-  $installer install -y vim
+  installer vim
 fi
 
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-ln -sf $(pwd)/.vimrc ~/.vimrc
+ln -sf $(pwd)/.vimrc $HOME/.vimrc
 
 vim +PlugInstall +qa

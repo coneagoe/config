@@ -22,7 +22,7 @@ set -o nounset                                  # Treat unset variables as an er
 source common.sh
 
 if ! is_installed tmux; then
-    $(get_installer) install -y tmux
+    installer tmux
 fi
 
 rm -rf $HOME/.tmux

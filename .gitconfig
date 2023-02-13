@@ -1,0 +1,16 @@
+[user]
+	name = coneagoe
+	email = coneagoe@gmail.com
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[core]
+	editor = vim
+[merge]
+	tool = vimdiff
+	conflictstyle = diff3
+[mergetool]
+	prompt = false
+[alias]
+	dfw = diff --ignore-space-change

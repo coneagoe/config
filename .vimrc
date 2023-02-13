@@ -172,6 +172,7 @@ let s:hostname = system('hostname')
 
         " python {
             Plug 'python-mode/python-mode', { 'branch': 'develop', 'for': 'python' }
+            Plug 'davidhalter/jedi-vim', { 'for': 'python' }
         " }
 
         " perl {
@@ -219,6 +220,10 @@ let s:hostname = system('hostname')
 
         " yaml {
             Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
+        " }
+
+        " risc-v assembly {
+            Plug 'kylelaker/riscv.vim', { 'for': 'S' }
         " }
     " }}}
 
