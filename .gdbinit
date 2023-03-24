@@ -681,6 +681,40 @@ document pwstring
 	pwstring s - Prints content, size/length, capacity and ref-count of wstring s
 end
 
+
+# dump memory in hex and character
+define xac
+    dont-repeat
+    set $addr = (char *)($arg0)
+    set $endaddr = $addr + $arg1
+    while $addr < $endaddr
+        printf "%p: ", $addr
+        set $lineendaddr = $addr + 8
+        if $lineendaddr > $endaddr
+            set $lineendaddr = $endaddr
+        end
+        set $a = $addr
+        while $a < $lineendaddr
+            printf "0x%02x ", *(unsigned char *)$a
+            set $a++
+        end
+        printf "'"
+        set $a = $addr
+        while $a < $lineendaddr
+            printf "%c", *(char *)$a
+            set $a++
+        end
+        printf "'\n"
+        set $addr = $addr + 8
+    end
+end
+
+
+document xac
+    usage: xac address count
+end
+
+
 # Enable command history (Ctrl-R)
 set history filename ~/.gdb_history
 set history save on
@@ -697,4 +731,3 @@ set print vtbl on
 set print demangle on
 set demangle-style gnu-v3
 set print sevenbit-strings off
-

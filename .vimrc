@@ -67,9 +67,9 @@ let s:hostname = system('hostname')
     " }}}
 
     " other {{{
-"        Plug 'vim-scripts/highlight.vim'
-        Plug 'azabiong/vim-highlighter'
-"        Plug 'lfv89/vim-interestingwords'
+        " Plug 'vim-scripts/highlight.vim'
+        " Plug 'azabiong/vim-highlighter'
+        Plug 'lfv89/vim-interestingwords'
         Plug 'myusuf3/numbers.vim'
 
         " match parentheses in different colors
@@ -86,8 +86,10 @@ let s:hostname = system('hostname')
     " tags {{{
 "        Plug 'ludovicchabant/vim-gutentags'
         Plug 'majutsushi/tagbar'
-        Plug 'joe-skb7/cscope-maps'
+"        Plug 'joe-skb7/cscope-maps'
         Plug 'lvht/tagbar-markdown'
+        Plug 'hari-rangarajan/CCTree'
+        Plug 'ronakg/quickr-cscope.vim'
     " }}}
 
     " align {{{
@@ -103,7 +105,7 @@ let s:hostname = system('hostname')
     " }}}
 
     " VCS {{{
-        Plug 'mhinz/vim-signify'
+"        Plug 'mhinz/vim-signify'
 
         " hg {{{
             Plug 'phleet/vim-mercenary'
@@ -137,9 +139,10 @@ let s:hostname = system('hostname')
     " }}}
 
     " status line {{{
-        Plug 'vim-airline/vim-airline'
-        Plug 'vim-airline/vim-airline-themes'
+"        Plug 'vim-airline/vim-airline'
+"        Plug 'vim-airline/vim-airline-themes'
         Plug 'bling/vim-bufferline'
+        Plug 'itchyny/lightline.vim'
     " }}}
 
     " colorscheme {{{
@@ -162,7 +165,7 @@ let s:hostname = system('hostname')
 
         " Plug 'Valloric/YouCompleteMe', { 'for':['c', 'cpp'] }
 
-        Plug 'Shougo/echodoc.vim'
+        Plug 'Shougo/echodoc.vim', { 'for':['c', 'cpp'] }
 
         " C++ {
             Plug 'octol/vim-cpp-enhanced-highlight', { 'for':['c', 'cpp'] }
@@ -180,12 +183,11 @@ let s:hostname = system('hostname')
         " }
 
         " bash {
-"            Plug 'WolfgangMehner/bash-support', { 'for': 'bash' }
-            Plug 'WolfgangMehner/bash-support'
+            Plug 'WolfgangMehner/bash-support', { 'for': ['bash', 'sh'] }
         " }
 
         " Doxygen {
-            Plug 'mrtazz/DoxygenToolkit.vim'
+            Plug 'mrtazz/DoxygenToolkit.vim', { 'for': ['c', 'cpp'] }
         " }
 
         " Latex {
@@ -194,8 +196,8 @@ let s:hostname = system('hostname')
         " }
 
         " lint {
-            Plug 'vim-syntastic/syntastic', { 'for':['sh', 'c', 'cpp', 'perl', 'python'] }
-"            Plug 'dense-analysis/ale', { 'for':['sh', 'c', 'cpp', 'perl', 'vim', 'latex', 'matlab'] }
+"            Plug 'vim-syntastic/syntastic', { 'for':['sh', 'c', 'cpp', 'perl', 'python'] }
+"            Plug 'dense-analysis/ale'
         " }
 
         " HTML & CSS {
@@ -211,7 +213,7 @@ let s:hostname = system('hostname')
         " }
 
         " markdown {
-            Plug 'plasticboy/vim-markdown'
+            Plug 'plasticboy/vim-markdown', { 'for': 'md' }
         " }
 
         " xml {
@@ -277,8 +279,9 @@ let s:hostname = system('hostname')
 "    colorscheme onedark
 "    colorscheme molokai
 "    else
-    colorscheme koehler
+"    colorscheme koehler
 "    endif
+    colorscheme default
 
     set cursorline
     hi CursorLine term=bold cterm=bold guibg=Grey40
@@ -406,16 +409,16 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
     let g:syntastic_auto_loc_list = 1
     let g:syntastic_check_on_open = 1
     let g:syntastic_check_on_wq = 0
-
     let g:syntastic_c_config_file = '.syntastic_rc'
+    let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
 " }}}
 
 
 " ale {{{
-    let g:ale_sign_column_always = 1
-    let g:ale_lint_on_text_changed = 'never'
-    let g:ale_lint_on_insert_leave = 0
-    let g:ale_lint_on_enter = 0
+"    let g:ale_sign_column_always = 1
+"    let g:ale_lint_on_text_changed = 0
+"    let g:ale_lint_on_insert_leave = 0
+"    let g:ale_lint_on_enter = 0
 
 "    let g:ale_linters = {
 "                \   'python': ['pylint'],
@@ -464,6 +467,11 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 "  if s:hostname[0:3] == "FNSH"
     let g:airline_theme='angr'
 "  endif
+" }}}
+
+
+" lightline {{{
+    set laststatus=2
 " }}}
 
 
@@ -694,6 +702,13 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
     if filereadable("cscope.out")
         cs add cscope.out
     endif
+" }}}
+
+
+" vim-interestingwords {{{
+    let g:interestingWordsGUIColors = ['#8CCBEA', '#A4E57E', '#FFDB72', '#FF7272', '#FFB3FF', '#9999FF']
+    let g:interestingWordsTermColors = ['154', '121', '211', '137', '214', '222']
+    let g:interestingWordsRandomiseColors = 1
 " }}}
 
 
