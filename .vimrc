@@ -10,6 +10,15 @@ let s:hostname = system('hostname')
 " }}}
 
 
+" csv
+if !exists("did_load_csvfiletype")
+  let did_load_csvfiletype=1
+
+  augroup filetypedetect
+      au! BufRead,BufNewFile *.csv setfiletype csv
+  augroup END
+endif
+
 " vim-plug {{{
     " Specify a directory for plugins
     " - For Neovim: ~/.local/share/nvim/plugged
@@ -241,6 +250,10 @@ let s:hostname = system('hostname')
 
     " hex {{{
         Plug 'rootkiter/vim-hexedit'
+    " }}}
+
+    " csv {{{
+        Plug 'chrisbra/csv.vim', { 'for': 'csv' }
     " }}}
 
     " Initialize plugin system
