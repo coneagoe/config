@@ -10,14 +10,15 @@ DARK_BG=1
 
 setopt CORRECT
 
-HISTFILE=$HOME/.zhistory
+#HISTFILE=${HISTFILE:-$HOME/.zhistory}
 setopt APPEND_HISTORY
 setopt sharehistory
 setopt extendedhistory
 
 bindkey -v
 bindkey '^R' history-incremental-search-backward
-
+bindkey "^[[A~" history-beginning-search-backward
+bindkey "^[[B~" history-beginning-search-forward
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -85,14 +86,15 @@ ZSH_THEME="ys"
 plugins=(
   git
   vi-mode
-  history
+  history-search-multi-word
   rsync
   pip
-  fzf
+  fzf-zsh-plugin
   screen
   extract
   docker
   ripgrep
+  zsh-autosuggestions
 )
 #history-substring-search
 #tmux
@@ -143,6 +145,10 @@ alias tftp='tftp -v -m binary'
 
 alias hd="hg diff -w"
 
+# decompile Dockerfile from image
+# usage: dfimage -sV=1.36 nginx:latest
+# -sV=1.36 is not always required
+alias dfimage="docker run -v /var/run/docker.sock:/var/run/docker.sock --rm alpine/dfimage"
 
 rp()
 {
@@ -158,3 +164,7 @@ DISABLE_FZF_KEY_BINDINGS="false"
 # z.sh
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
 
+# otherwise, color code will be recognized as ANSI
+export PAGER="less -R"
+
+export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$PATH"
