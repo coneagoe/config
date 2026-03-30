@@ -20,12 +20,6 @@ bindkey '^R' history-incremental-search-backward
 bindkey "^[[A~" history-beginning-search-backward
 bindkey "^[[B~" history-beginning-search-forward
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-if [ -e $HOME/.company_config.sh ]; then
-  source $HOME/.company_config.sh
-fi
-
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -86,15 +80,16 @@ ZSH_THEME="ys"
 plugins=(
   git
   vi-mode
-  history-search-multi-word
+  history-substring-search
   rsync
   pip
-  fzf-zsh-plugin
+  fzf
   screen
   extract
   docker
-  ripgrep
+  z
   zsh-autosuggestions
+  zsh-syntax-highlighting
 )
 #history-substring-search
 #tmux
@@ -168,3 +163,7 @@ DISABLE_FZF_KEY_BINDINGS="false"
 export PAGER="less -R"
 
 export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
