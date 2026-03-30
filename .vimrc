@@ -76,7 +76,7 @@ endif
     " }}}
 
     " other {{{
-        " Plug 'vim-scripts/highlight.vim'
+        Plug 'vim-scripts/highlight.vim'
         " Plug 'azabiong/vim-highlighter'
         Plug 'lfv89/vim-interestingwords'
         Plug 'myusuf3/numbers.vim'
@@ -114,7 +114,7 @@ endif
     " }}}
 
     " VCS {{{
-"        Plug 'mhinz/vim-signify'
+        Plug 'mhinz/vim-signify'
 
         " hg {{{
             Plug 'phleet/vim-mercenary'
@@ -140,6 +140,10 @@ endif
         " fzf {
             Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
             Plug 'junegunn/fzf.vim'
+        " }
+
+        " LeaderF {
+"            Plug 'Yggdroot/LeaderF', { 'do': ':LeaderfInstallCExtension' }
         " }
     " }}}
 
@@ -179,6 +183,7 @@ endif
         " C++ {
             Plug 'octol/vim-cpp-enhanced-highlight', { 'for':['c', 'cpp'] }
             Plug 'WolfgangMehner/c-support', { 'for': ['c', 'cpp'] }
+            Plug 'bfrg/vim-cpp-modern', { 'for': ['c', 'cpp'] }
 "            Plug 'vim-scripts/refactor', { 'for': ['c', 'cpp'] }
         " }
 
@@ -205,8 +210,9 @@ endif
         " }
 
         " lint {
+"            Plug 'vim-syntastic/syntastic', { 'for': 'sh' }
 "            Plug 'vim-syntastic/syntastic', { 'for':['sh', 'c', 'cpp', 'perl', 'python'] }
-"            Plug 'dense-analysis/ale'
+            Plug 'dense-analysis/ale'
         " }
 
         " HTML & CSS {
@@ -236,6 +242,15 @@ endif
         " risc-v assembly {
             Plug 'kylelaker/riscv.vim', { 'for': 'S' }
         " }
+
+        " Dockerfile {
+            Plug 'ekalinin/Dockerfile.vim'
+        " }
+    " }}}
+
+    " copilot {{{
+"        Plug 'Exafunction/codeium.vim'
+"        Plug 'github/copilot.vim'
     " }}}
 
     " tmux {{{
@@ -290,11 +305,11 @@ endif
 " Editor {{{
 "    if filereadable("home")
 "    colorscheme onedark
-"    colorscheme molokai
+    colorscheme molokai
 "    else
 "    colorscheme koehler
 "    endif
-    colorscheme default
+"    colorscheme default
 
     set cursorline
     hi CursorLine term=bold cterm=bold guibg=Grey40
@@ -334,7 +349,8 @@ endif
     " }}}
 
     " auto remove trailing whitespace
-    autocmd FileType c,cpp,python,perl autocmd BufWritePre <buffer> %s/\s\+$//e
+    " autocmd FileType c,cpp,python,perl autocmd BufWritePre <buffer> %s/\s\+$//e
+    autocmd BufWritePre * :%s/\s\+$//e
 
     filetype plugin on
 " }}}
@@ -413,51 +429,22 @@ nnoremap <F10> :call asyncrun#quickfix_toggle(6)<cr>
 " }}}
 
 
-" syntastic {{{
-    set statusline+=%#warningmsg#
-    set statusline+=%{SyntasticStatuslineFlag()}
-    set statusline+=%*
-
-    let g:syntastic_always_populate_loc_list = 1
-    let g:syntastic_auto_loc_list = 1
-    let g:syntastic_check_on_open = 1
-    let g:syntastic_check_on_wq = 0
-    let g:syntastic_c_config_file = '.syntastic_rc'
-    let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
-" }}}
-
-
 " ale {{{
-"    let g:ale_sign_column_always = 1
-"    let g:ale_lint_on_text_changed = 0
-"    let g:ale_lint_on_insert_leave = 0
-"    let g:ale_lint_on_enter = 0
+    let g:ale_enabled = 1
 
-"    let g:ale_linters = {
-"                \   'python': ['pylint'],
-"                \}
+    " Run the linter when you save a file
+    let g:ale_lint_on_save = 1
 
-"    let g:ale_linters_explicit = 1
-"    let g:ale_completion_delay = 500
-"    let g:ale_echo_delay = 20
-"    let g:ale_lint_delay = 500
-"    let g:ale_echo_msg_format = '[%linter%] %code: %%s'
-"    let g:ale_lint_on_text_changed = 'normal'
-"    let g:ale_lint_on_insert_leave = 1
-"    let g:airline#extensions#ale#enabled = 1
-"
-"    let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
-"    let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
-"    let g:ale_c_cppcheck_options = ''
-"    let g:ale_cpp_cppcheck_options = ''
-"
-"    let g:ale_sign_error = "\ue009\ue009"
-"    hi! clear SpellBad
-"    hi! clear SpellCap
-"    hi! clear SpellRare
-"    hi! SpellBad gui=undercurl guisp=red
-"    hi! SpellCap gui=undercurl guisp=blue
-"    hi! SpellRare gui=undercurl guisp=magenta
+    " auto fix when save
+    let ale_fix_on_save = 1
+
+    let g:ale_linters = {
+                \   'python': ['pylint'],
+                \   'sh': ['shellcheck'],
+                \}
+
+    let g:ale_c_gcc_options = '-Wall -O2 -std=c99'
+    let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
 " }}}
 
 
